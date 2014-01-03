@@ -141,9 +141,8 @@
 			var news_feed = $('#news-feed');
 			news_feed.empty();
 			data.forEach(function(record){
-				isos = record.iso.split(',');
 				var li = $('<li></li>')
-				isos.forEach(function(iso){
+				record.iso.forEach(function(iso){
 					li.addClass(iso)
 				});
 
