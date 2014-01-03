@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import time,json, feedparser, requests, sqlite3, logging, hashlib, string, operator, os, re
+import time,json, feedparser, requests, logging, hashlib, string, operator, os, re, psycopg2
 from tfidf import TfIdf
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
@@ -16,34 +16,8 @@ sys.setdefaultencoding('utf-8')
 
 class FeedKraken:
 	
-	TABLE_FEEDS_CREATE = """create table feeds (
-					name varchar(255), 
-					url varchar(255) not null unique, 
-					lang varchar(3), 
-					general_topic varchar(255),
-					active integer default 1,
-					last_update timestamp
-					);"""
-	TABLE_ARTICLES_DROP = """drop table if exists articles"""
-	TABLE_ARTICLES_CREATE = """create table articles(
-					feed_id integer, 
-					article_id varchar(255), 
-					url varchar(255), 
-					hash char(40),
-					title text, 
-					category text, 
-					published timestamp,
-					last_update timestamp, 
-					author varchar(255), 
-					description text,
-					meta_categories text,
-					flag_text_extract integer default 0,
-					flag_text_parsed integer default 0,
-					flag_tyk_upload integer default 0
-					);"""
-
-	def __init__(self, outputpath=".",dbpath='kraken.db', logpath='feed_kraken.log'):
-		self.dbname = dbpath
+	
+	def __init__(self, outputpath=".", logpath='feed_kraken.log', dbuser='anchorman',dbpass='newsdesk',dbname='thenewsroom', dbhost='127.0.0.1'):
 		self.outputpath = outputpath
 		logging.basicConfig(filename=logpath,level=logging.INFO)
 		logging.getLogger("requests").setLevel(logging.ERROR)
@@ -51,42 +25,21 @@ class FeedKraken:
 		logging.info('   RELEASE THE KRAKEN!!   ')
 		logging.info('+------------------------+')
 		logging.info('-- %s' % datetime.now())
-		
-	def setup(self):
-		self.db = sqlite3.connect(self.dbname, detect_types=sqlite3.PARSE_DECLTYPES)
-		data = [
-			(u'nyt global','http://rss.nytimes.com/services/xml/rss/nyt/World.xml',datetime.fromtimestamp(0000000000),'en','news'),
-			(u'süddeutsche zeitung','http://international.sueddeutsche.de/rss',datetime.fromtimestamp(0000000000),'de','news'),
-			(u'bbc world','http://feeds.bbci.co.uk/news/world/rss.xml',datetime.fromtimestamp(0000000000),'en','news'),
-			(u'reuters world news','http://feeds.reuters.com/Reuters/worldNews',datetime.fromtimestamp(0000000000),'en','news'),
-			(u'reuters global market','http://feeds.reuters.com/reuters/globalmarketsNews',datetime.fromtimestamp(0000000000),'en','economy'),
-			(u'le monde','http://rss.lemonde.fr/c/205/f/3052/index.rss',datetime.fromtimestamp(0000000000),'fr','news'),
-			]
 
-		q = 'insert into feeds(name, url, last_update, lang, general_topic) values (?,?,?,?,?)'
-		c = self.db.cursor()
-		
-		c.execute(self.TABLE_ARTICLES_DROP)
-		c.execute(self.TABLE_ARTICLES_CREATE)
-
-		c.execute(self.TABLE_FEEDS_DROP)
-		c.execute(self.TABLE_FEEDS_CREATE)
-
-		for d in data:
-			c.execute(q,d)
-		c.close()
-		self.db.commit()
-		self.db.close()
+		self.dbuser = dbuser
+		self.dbpass = dbpass
+		self.dbname = dbname
+		self.dbhost = dbhost
 	
 	def grabUrls(self):
 		logging.info('* grab urls')
-		self.db = sqlite3.connect(self.dbname, detect_types=sqlite3.PARSE_DECLTYPES)
+		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
 		c = self.db.cursor()
-		c.execute('SELECT url, last_update, ROWID FROM feeds WHERE active = 1')
+		c.execute('SELECT url, last_update, feed_id FROM feeds WHERE active = 1')
 		feeds = c.fetchall()
 		for f in feeds:
 			updated = self.parse(f[0], f[1], f[2])
-			c.execute('UPDATE feeds SET last_update = ? WHERE ROWID = ?', (updated, f[2]))
+			c.execute('UPDATE feeds SET last_update = %s WHERE feed_id = %s', (updated, f[2]))
 			self.db.commit()
 		c.close()
 		self.db.close()
@@ -106,51 +59,45 @@ class FeedKraken:
 
 				# CHECK IF IT IS ALREADY PRESENT WITH THE SAME DATE ON THE DATABASE
 				sha1_hash = hashlib.sha1(entry.link).hexdigest()
-				c.execute('SELECT ROWID, published FROM articles WHERE hash = ?', (sha1_hash,))
+				c.execute('SELECT published FROM articles WHERE hash = %s', (sha1_hash,))
 				row = c.fetchone()
 				if row is not None:
-					logging.warn('url with hash %s exists at row %d with date %s, new date is %s ' % (sha1_hash, row[0],row[1],published))
-					# update the 
-				# 
-				count += 1
-				tmp_dates.append(published)
-				data = (feed_id, 
-					entry.get('id',None), 
-					entry.link, 
-					entry.get('title',None),
-					entry.get('category',None),
-					published, 
-					entry.get('author',None),
-					entry.get('description',None),
-					sha1_hash
-					)
-				c.execute("INSERT INTO articles (feed_id,article_id,url,title,category,published,author,description,hash) VALUES(?,?,?,?,?,?,?,?,?)", data)
+					logging.warn('url with hash %s exists with date %s, new date is %s ' % (sha1_hash, row[0], published))
+					c.execute('SELECT article_hash,updated_on FROM articles_update WHERE article_hash = %s AND updated_on = %s', (sha1_hash,published))
+					if c.fetchone() is None:
+						c.execute("INSERT INTO articles_update(article_hash, updated_on, article_day) VALUES (%s,%s,%s)", (sha1_hash,published, published))
+					else:
+						c.execute("UPDATE articles_update SET count_duplicate = count_duplicate + 1 WHERE article_hash = %s AND updated_on = %s", (sha1_hash,published))	
+					
+				else:
+					count += 1
+					tmp_dates.append(published)
+					data = (feed_id, 
+						entry.get('id',None), 
+						entry.link, 
+						entry.get('title',None),
+						entry.get('category',None),
+						published, 
+						entry.get('author',None),
+						entry.get('description',None),
+						sha1_hash
+						)
+					c.execute("INSERT INTO articles (feed_id,article_id,url,title,category,published,author,description,hash) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)", data)
 		logging.info('feed id %d has %d entries after %s' % (feed_id, count, start_date)) 
 		return max(tmp_dates)
 
 	def loadCountries(self):
 		c = self.db.cursor()
-		c.execute('SELECT ISO3, Country, Capital FROM country_info')
-		counties = c.fetchall()
-
+		c.execute('SELECT "isoAlpha3", "keywords" FROM countries_keywords')
 		data = {}
-		for country in counties:
-			countrylist = data.get(country[0])
-			if countrylist is None:
-				data[country[0]] = [country[1],country[2]]
-			else:
-				data[country[0]].append(country[1])
-				data[country[0]].append(country[2])
-
-		for iso,clist in data.iteritems():
-			data[iso] = [x.strip() for x in clist if x is not None and x != '']
-
+		for row in c.fetchall():
+			data[row[0]] = [x.strip() for x in row[1] if x is not None and x != '']
 		c.close()
 
 		return data
 
 	def createJsonForMatrix(self):
-		self.db = sqlite3.connect(self.dbname, detect_types=sqlite3.PARSE_DECLTYPES)
+		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
 		c = self.db.cursor()
 		
 
@@ -158,7 +105,7 @@ class FeedKraken:
 		nodes_index_source = []
 		nodes_index_target = []
 		# load nodes
-		c.execute("SELECT Country, ISO3, Continent FROM country_info ci WHERE IsPrimary = 1 ORDER BY Country")
+		c.execute('SELECT "countryName", "isoAlpha3", "continent" FROM countries c ORDER BY "countryName"')
 		i=1;
 		for row in c.fetchall():
 
@@ -199,7 +146,7 @@ class FeedKraken:
 			i_cn = nodes_index_source.index(iso3)
 			i_day = nodes_index_target.index(str(day))
 
-			out['links'].append({'source': i_cn, 'target': i_day, 'value': score })
+			out['links'].append({'source': i_cn, 'target': i_day, 'value': str(score) })
 		
 		with open(os.path.join(self.outputpath,"aggregate_data.json"),"w") as ag:
 			ag.write(json.dumps(out, indent=2))
@@ -219,7 +166,7 @@ class FeedKraken:
 
 		# nows feeds
 		headlines = []
-		c.execute("SELECT title,url,article_day,country,published,iso3 FROM articles_headlines_feed limit 100")
+		c.execute("SELECT title,url,article_day,country,published,country_iso3 FROM articles_headlines_feed limit 100")
 		for row in c.fetchall():
 			headlines.append({'title':row[0], 'url':row[1] , 'country':row[3], 'published':str(row[4]), 'iso':row[5]})
 
@@ -231,7 +178,7 @@ class FeedKraken:
 		c.execute("SELECT country,total_score,country_iso3 FROM top_country_last_week ")
 		for row in c.fetchall():
 			if row[1] > 1:
-				scores.append((row[0],row[1],row[2]))
+				scores.append((row[0],str(row[1]),row[2]))
 
 		with open(os.path.join(self.outputpath,"aggregate_top_scores.json"),"w") as ag:
 			ag.write(json.dumps(scores, indent=2))
@@ -244,9 +191,9 @@ class FeedKraken:
 			continet = row[0]
 			cn = continets.get(continet)
 			if cn is None:
-				continets[continet] = [{'name':row[1], 'size':row[2]*5}]
+				continets[continet] = [{'name':row[1], 'size':str(row[2]*5)}]
 			else:
-				continets[continet].append({'name':row[1], 'size':row[2]*5})
+				continets[continet].append({'name':row[1], 'size':str(row[2]*5)})
 		for cn,cos in continets.iteritems():
 			treemap['children'].append({'name':cn, 'children':cos})
 
@@ -256,14 +203,14 @@ class FeedKraken:
 		self.db.close()
 
 	def createPHPtable(self):
-		self.db = sqlite3.connect(self.dbname, detect_types=sqlite3.PARSE_DECLTYPES)
+		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
 		c = self.db.cursor()
 
 		table_data = [ [0 for x in range(48)] for i in range(260)]
 		nodes_index= {}
 	
 		# load nodes
-		c.execute("SELECT Country, ISO3 FROM country_info ci WHERE IsPrimary = 1 ORDER BY Country")
+		c.execute('SELECT "countryName", "isoAlpha3", "continent" FROM countries c ORDER BY "countryName"')
 		i=1;
 		for row in c.fetchall():
 			table_data[i][0] = row[0]
@@ -298,7 +245,7 @@ class FeedKraken:
 		self.db.close()
 
 	def createTFIDFTopics(self):
-		self.db = sqlite3.connect(self.dbname, detect_types=sqlite3.PARSE_DECLTYPES)
+		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
 		c = self.db.cursor()
 
 		headlines = {}
@@ -332,10 +279,10 @@ class FeedKraken:
 		}
 
 		logging.info('* extract text')
-		self.db = sqlite3.connect(self.dbname, detect_types=sqlite3.PARSE_DECLTYPES)
+		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
 		c = self.db.cursor()
 		
-		c.execute('SELECT DISTINCT hash, url, title, published, feed_id FROM articles WHERE flag_text_extract = 0 ORDER BY ROWID')
+		c.execute('SELECT DISTINCT hash, url, title, published, feed_id FROM articles WHERE flag_text_extract = 0 ORDER BY published')
 		urls = c.fetchall()
 
 
@@ -416,6 +363,14 @@ class FeedKraken:
 							text += ab.get_text(" ",strip=True)
 						extraction_method = 'nyt-blog/entry-content'
 						textFound = True
+				if not textFound: # SPIEGEL ONLINE
+					contents = soup.find_all(attrs={"class" : "article-section"})
+					if len(contents) > 0:
+						print '!!! SPIEGEL ONLINE content'
+						for ab in contents:
+							text += ab.get_text(" ",strip=True)
+						extraction_method = 'spiegel/article-section'
+						textFound = True
 
 				if not textFound:
 					text = soup.find("body").get_text(" ",strip=True)
@@ -426,21 +381,22 @@ class FeedKraken:
 				print url
 				print text
 
-				c.execute("UPDATE articles SET flag_text_extract = 1, content = ?, extraction_method = ? WHERE hash = ?", (text, extraction_method, hash_))
+				c.execute("UPDATE articles SET flag_text_extract = 1, content = %s, extraction_method = %s WHERE hash = %s", (text, extraction_method, hash_))
 				self.db.commit()
 			except Exception, e:
-				self.db.close()
-				raise e
+				c.execute("UPDATE articles SET errors = errors + 1 WHERE hash = %s", (hash_,))
+				self.db.commit()
+				
 		self.db.close()		
 
 	def aggregateCountries(self):
-		self.db = sqlite3.connect(self.dbname, detect_types=sqlite3.PARSE_DECLTYPES)
+		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
 		c = self.db.cursor()
 		c_article_country = self.db.cursor()
 		
 		countries = self.loadCountries()
 		
-		c.execute('SELECT DISTINCT hash, url, title, published, feed_id, content FROM articles WHERE flag_text_extract = 1 AND flag_text_parsed = 0 ORDER BY ROWID')
+		c.execute('SELECT DISTINCT hash, url, title, published, feed_id, content FROM articles WHERE flag_text_extract = 1 AND flag_text_parsed = 0 ORDER BY published')
 		urls = c.fetchall()
 		for u in urls:
 			url = u[1]
@@ -485,9 +441,9 @@ class FeedKraken:
 				sorted_x = sorted(country_values.iteritems(), key=operator.itemgetter(1))	
 				for t in sorted_x:
 					if t[1] > 0:
-						c_article_country.execute('INSERT OR IGNORE INTO article_country( article_hash, country_iso3, article_day, source_feed_id, country_in_title, frequency, occurrences) VALUES (?,?,?,?,?,?,?)', (hash_,t[0] ,published.date(), feed_id, country_in_title, float(t[1])/sum_values,t[1]))
+						c_article_country.execute('INSERT INTO article_country( article_hash, country_iso3, article_day, source_feed_id, country_in_title, frequency, occurrences) VALUES (%s,%s,%s,%s,%s,%s,%s)', (hash_,t[0] ,published.date(), feed_id, country_in_title, float(t[1])/sum_values,t[1]))
 						print '%s: %3d (%f)' % (t[0],t[1], float(t[1])/sum_values)
-				c_article_country.execute("UPDATE articles SET flag_text_parsed = 1 WHERE hash = ?", (hash_,))
+				c_article_country.execute("UPDATE articles SET flag_text_parsed = 1 WHERE hash = %s", (hash_,))
 				self.db.commit()
 
 
@@ -505,8 +461,8 @@ if __name__ == "__main__":
 	feed.extractArticlesText()
 	feed.aggregateCountries()
 	feed.createJsonForMatrix()
-	#feed.createPHPtable()
-	#feed.createTFIDFTopics()
+	feed.createPHPtable()
+	# feed.createTFIDFTopics()
 	# http://garage.tyk.li/?a=98e5d974&t=760ca0ec0c9b83a70e05c6cad09a38fa
    	
 
