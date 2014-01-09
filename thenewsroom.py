@@ -200,7 +200,66 @@ class FeedKraken:
 		with open(os.path.join(self.outputpath,"aggregate_tremap.json"),"w") as ag:
 			ag.write(json.dumps(treemap, indent=2))
 
+		# streamgraph
+		dates = []
+		countries = []
+		csv_streamgraph = []
+		c.execute("SELECT DISTINCT article_day FROM aggregate_article_country WHERE article_day > '2013-12-22' ORDER BY article_day")
+		for row in c.fetchall():
+			dates.append(row[0])
+		c.execute('SELECT country_iso3 FROM top_countries WHERE country_iso3 IS NOT NULL')
+		for row in c.fetchall():
+			countries.append(row[0])
+
+		for country in countries:
+			for day in dates:
+				c.execute("SELECT score FROM aggregate_article_country WHERE country_iso3 = %s AND article_day = %s", (country,day))
+				row = c.fetchone()
+				if row is None:
+					csv_streamgraph.append('%s,%s,%s\n'%(country,'0',str(day)))
+				else:
+					csv_streamgraph.append('%s,%s,%s\n'%(country,str(row[0]),str(day)))
+		
+		with open(os.path.join(self.outputpath,"streamgraph_data.csv"),"w") as ag:
+			ag.write('key,value,date\n')
+			for line in csv_streamgraph:
+				ag.write(line)
+
 		self.db.close()
+
+	def exportCountryArticleDetails(self):
+		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
+		c = self.db.cursor()
+
+		# get the maximum and miniumum date frm aggregate_article_country
+		c.execute("SELECT max(article_day) as max_day, min(article_day) as min_day FROM aggregate_article_country WHERE article_day > '2013-12-22'")
+		row = c.fetchone()
+		length=(row[0]-row[1]).days
+		dates=[row[1]+timedelta(n) for n in range(length+1)]
+
+		c.execute('SELECT "isoAlpha3" FROM  countries ORDER BY "countryName"')
+		for row in c.fetchall():
+			isoAlpha3 = row[0]
+			with open(os.path.join(self.outputpath,"details_data_%s.tsv" % isoAlpha3),"w") as out_:
+				out_.write("date\tscore\tarticles\tsources\n")
+
+				for date in dates:
+					c.execute('SELECT article_day,score,articles_num,sources_num FROM aggregate_article_country WHERE country_iso3 = %s AND article_day = %s', (isoAlpha3,date))					
+					row2 = c.fetchone()
+					if row2 is None:
+						out_.write('%s\t%f\t%d\t%d\n' % (date,0,0,0))
+						continue
+					out_.write('%s\t%f\t%d\t%d\n' % (row2[0],row2[1],row2[2],row2[3]))
+
+
+				# c.execute('SELECT article_day,score,articles_num,sources_num FROM aggregate_article_country WHERE country_iso3 = %s ORDER BY article_day', (isoAlpha3,))
+				# for row2 in c.fetchall():
+				# 	out_.write('%s\t%f\t%d\t%d\n' % (row2[0],row2[1],row2[2],row2[3]))
+
+
+
+		self.db.close()
+
 
 	def createPHPtable(self):
 		self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (self.dbname, self.dbuser, self.dbpass, self.dbhost))
@@ -454,7 +513,7 @@ class FeedKraken:
 			
 	
 if __name__ == "__main__": 
-	feed = FeedKraken(outputpath='./www')
+	feed = FeedKraken(outputpath='./www/data')
 	#time.sleep(3600*3)
 	# feed.setup()
 	feed.grabUrls()
