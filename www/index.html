@@ -34,6 +34,10 @@ text.active {
 <header>
   <aside>December 25, 2013</aside>
   <a rel="author">A&nbsp;D </a>
+  / <a href="bamboo">trendlist</a>
+  / <a href="streamgraph">streamgraph</a>
+  / <a href="treemap">treemap</a>
+  / <a href="inspect">news lens</a>
 </header>
 
 <h1><i>The Newsroom</i></h1>
@@ -71,7 +75,7 @@ var svg = d3.select("#newsdesk").append("svg")
 
 
 // data
-d3.json("aggregate_data.json", function(miserables) {
+d3.json("data/aggregate_data.json", function(miserables) {
   var matrix = [],
       nodes_source = miserables.nodes_source,
       nodes_target = miserables.nodes_target,
@@ -178,7 +182,7 @@ d3.json("aggregate_data.json", function(miserables) {
 
   //headlines
   var headlines;
-  d3.json("aggregate_headlines.json", function(hl) {
+  d3.json("data/aggregate_headlines.json", function(hl) {
     headlines = hl
   });
 
@@ -233,7 +237,7 @@ d3.json("aggregate_data.json", function(miserables) {
 <script type="text/javascript">
   
   //headlines
-  d3.json("aggregate_top_scores.json", function(hl) {
+  d3.json("data/aggregate_top_scores.json", function(hl) {
     text = ''
     hl.forEach(function(v){
       text += '<li STYLE="list-style-type: decimal">'+v[0]+' <span>'+v[1]+'</span></li>';
@@ -245,7 +249,11 @@ d3.json("aggregate_data.json", function(miserables) {
 
 
 <footer>
-  <aside>December 24, 2013</aside>
+  <aside>December 25, 2013</aside>
   <a href="" rel="author">A&nbsp;D </a>
+  / <a href="bamboo">trendlist</a>
+  / <a href="streamgraph">streamgraph</a>
+  / <a href="treemap">treemap</a>
+  / <a href="inspect">news lens</a>
 </footer>
 <div id="directions_extension" style="display: none;"></div></body></html>

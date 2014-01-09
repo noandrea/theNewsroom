@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script>
+
+var sources = ['details_data_ABW.tsv','details_data_AFG.tsv','details_data_AGO.tsv','details_data_AIA.tsv','details_data_ALA.tsv','details_data_ALB.tsv','details_data_AND.tsv','details_data_ARE.tsv','details_data_ARG.tsv','details_data_ARM.tsv','details_data_ASM.tsv','details_data_ATA.tsv','details_data_ATF.tsv','details_data_ATG.tsv','details_data_AUS.tsv','details_data_AUT.tsv','details_data_AZE.tsv','details_data_BDI.tsv','details_data_BEL.tsv','details_data_BEN.tsv','details_data_BES.tsv','details_data_BFA.tsv','details_data_BGD.tsv','details_data_BGR.tsv','details_data_BHR.tsv','details_data_BHS.tsv','details_data_BIH.tsv','details_data_BLM.tsv','details_data_BLR.tsv','details_data_BLZ.tsv','details_data_BMU.tsv','details_data_BOL.tsv','details_data_BRA.tsv','details_data_BRB.tsv','details_data_BRN.tsv','details_data_BTN.tsv','details_data_BVT.tsv','details_data_BWA.tsv','details_data_CAF.tsv','details_data_CAN.tsv','details_data_CCK.tsv','details_data_CHE.tsv','details_data_CHL.tsv','details_data_CHN.tsv','details_data_CIV.tsv','details_data_CMR.tsv','details_data_COD.tsv','details_data_COG.tsv','details_data_COK.tsv','details_data_COL.tsv','details_data_COM.tsv','details_data_CPV.tsv','details_data_CRI.tsv','details_data_CUB.tsv','details_data_CUW.tsv','details_data_CXR.tsv','details_data_CYM.tsv','details_data_CYP.tsv','details_data_CZE.tsv','details_data_DEU.tsv','details_data_DJI.tsv','details_data_DMA.tsv','details_data_DNK.tsv','details_data_DOM.tsv','details_data_DZA.tsv','details_data_ECU.tsv','details_data_EGY.tsv','details_data_ERI.tsv','details_data_ESH.tsv','details_data_ESP.tsv','details_data_EST.tsv','details_data_ETH.tsv','details_data_FIN.tsv','details_data_FJI.tsv','details_data_FLK.tsv','details_data_FRA.tsv','details_data_FRO.tsv','details_data_FSM.tsv','details_data_GAB.tsv','details_data_GBR.tsv','details_data_GEO.tsv','details_data_GGY.tsv','details_data_GHA.tsv','details_data_GIB.tsv','details_data_GIN.tsv','details_data_GLP.tsv','details_data_GMB.tsv','details_data_GNB.tsv','details_data_GNQ.tsv','details_data_GRC.tsv','details_data_GRD.tsv','details_data_GRL.tsv','details_data_GTM.tsv','details_data_GUF.tsv','details_data_GUM.tsv','details_data_GUY.tsv','details_data_HKG.tsv','details_data_HMD.tsv','details_data_HND.tsv','details_data_HRV.tsv','details_data_HTI.tsv','details_data_HUN.tsv','details_data_IDN.tsv','details_data_IMN.tsv','details_data_IND.tsv','details_data_IOT.tsv','details_data_IRL.tsv','details_data_IRN.tsv','details_data_IRQ.tsv','details_data_ISL.tsv','details_data_ISR.tsv','details_data_ITA.tsv','details_data_JAM.tsv','details_data_JEY.tsv','details_data_JOR.tsv','details_data_JPN.tsv','details_data_KAZ.tsv','details_data_KEN.tsv','details_data_KGZ.tsv','details_data_KHM.tsv','details_data_KIR.tsv','details_data_KNA.tsv','details_data_KOR.tsv','details_data_KWT.tsv','details_data_LAO.tsv','details_data_LBN.tsv','details_data_LBR.tsv','details_data_LBY.tsv','details_data_LCA.tsv','details_data_LIE.tsv','details_data_LKA.tsv','details_data_LSO.tsv','details_data_LTU.tsv','details_data_LUX.tsv','details_data_LVA.tsv','details_data_MAC.tsv','details_data_MAF.tsv','details_data_MAR.tsv','details_data_MCO.tsv','details_data_MDA.tsv','details_data_MDG.tsv','details_data_MDV.tsv','details_data_MEX.tsv','details_data_MHL.tsv','details_data_MKD.tsv','details_data_MLI.tsv','details_data_MLT.tsv','details_data_MMR.tsv','details_data_MNE.tsv','details_data_MNG.tsv','details_data_MNP.tsv','details_data_MOZ.tsv','details_data_MRT.tsv','details_data_MSR.tsv','details_data_MTQ.tsv','details_data_MUS.tsv','details_data_MWI.tsv','details_data_MYS.tsv','details_data_MYT.tsv','details_data_NAM.tsv','details_data_NCL.tsv','details_data_NER.tsv','details_data_NFK.tsv','details_data_NGA.tsv','details_data_NIC.tsv','details_data_NIU.tsv','details_data_NLD.tsv','details_data_NOR.tsv','details_data_NPL.tsv','details_data_NRU.tsv','details_data_NZL.tsv','details_data_OMN.tsv','details_data_PAK.tsv','details_data_PAN.tsv','details_data_PCN.tsv','details_data_PER.tsv','details_data_PHL.tsv','details_data_PLW.tsv','details_data_PNG.tsv','details_data_POL.tsv','details_data_PRI.tsv','details_data_PRK.tsv','details_data_PRT.tsv','details_data_PRY.tsv','details_data_PSE.tsv','details_data_PYF.tsv','details_data_QAT.tsv','details_data_REU.tsv','details_data_ROU.tsv','details_data_RUS.tsv','details_data_RWA.tsv','details_data_SAU.tsv','details_data_SDN.tsv','details_data_SEN.tsv','details_data_SGP.tsv','details_data_SGS.tsv','details_data_SHN.tsv','details_data_SJM.tsv','details_data_SLB.tsv','details_data_SLE.tsv','details_data_SLV.tsv','details_data_SMR.tsv','details_data_SOM.tsv','details_data_SPM.tsv','details_data_SRB.tsv','details_data_SSD.tsv','details_data_STP.tsv','details_data_SUR.tsv','details_data_SVK.tsv','details_data_SVN.tsv','details_data_SWE.tsv','details_data_SWZ.tsv','details_data_SXM.tsv','details_data_SYC.tsv','details_data_SYR.tsv','details_data_TCA.tsv','details_data_TCD.tsv','details_data_TGO.tsv','details_data_THA.tsv','details_data_TJK.tsv','details_data_TKL.tsv','details_data_TKM.tsv','details_data_TLS.tsv','details_data_TON.tsv','details_data_TTO.tsv','details_data_TUN.tsv','details_data_TUR.tsv','details_data_TUV.tsv','details_data_TWN.tsv','details_data_TZA.tsv','details_data_UGA.tsv','details_data_UKR.tsv','details_data_UMI.tsv','details_data_URY.tsv','details_data_USA.tsv','details_data_UZB.tsv','details_data_VAT.tsv','details_data_VCT.tsv','details_data_VEN.tsv','details_data_VGB.tsv','details_data_VIR.tsv','details_data_VNM.tsv','details_data_VUT.tsv','details_data_WLF.tsv','details_data_WSM.tsv','details_data_XKX.tsv','details_data_YEM.tsv','details_data_ZAF.tsv','details_data_ZMB.tsv','details_data_ZWE.tsv'];
+
+var margin = {top: 20, right: 80, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 200 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var line = d3.svg.line()
+    .interpolate("basis")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.temperature); });
+
+
+
+sources.forEach(function(value){
+	var svg = d3.select("body").append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.tsv("../data/"+value, function(error, data) {
+	  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+
+	  data.forEach(function(d) {
+	    d.date = parseDate(d.date);
+	  });
+
+	  var cities = color.domain().map(function(name) {
+	    return {
+	      name: name,
+	      values: data.map(function(d) {
+	        return {date: d.date, temperature: +d[name]};
+	      })
+	    };
+	  });
+
+	  x.domain(d3.extent(data, function(d) { return d.date; }));
+
+	  y.domain([
+	    // d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
+	    // d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
+	    0,18
+	  ]);
+
+	  svg.append("g")
+	      .attr("class", "x axis")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(xAxis);
+
+	  svg.append("g")
+	      .attr("class", "y axis")
+	      .call(yAxis)
+	    .append("text")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text(value);
+
+	  var city = svg.selectAll(".city")
+	      .data(cities)
+	    .enter().append("g")
+	      .attr("class", "city");
+
+	  city.append("path")
+	      .attr("class", "line")
+	      .attr("d", function(d) { return line(d.values); })
+	      .style("stroke", function(d) { return color(d.name); });
+
+	  city.append("text")
+	      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+	      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+	      .attr("x", 3)
+	      .attr("dy", ".35em")
+	      .text(function(d) { return d.name; });
+});
+
+});
+
+
+
+</script>
