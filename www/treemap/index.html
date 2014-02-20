@@ -8,14 +8,8 @@
     <script type="text/javascript" src="d3.layout.js"></script>
     <style type="text/css">
 
-    body{
-      min-height: 1500px;
-    }
-
 .chart {
   display: block;
-  width:100%;
-  height:100%;
 }
 
 text {
@@ -26,13 +20,15 @@ rect {
   fill: none;
 }
 
+footer{
+  display: block;
+}
+
     </style>
   </head>
   <body>
     <div id="body">
       <div id="footer">
-        d3.layout.treemap
-        <div class="hint">click or option-click to descend or ascend</div>
         <div><select>
           <option value="size">Size</option>
           <option value="count">Count</option>
@@ -41,8 +37,10 @@ rect {
     </div>
     <script type="text/javascript">
 
-var w = 1200,
-    h = 700,
+var margin = {top: 20, right: 20, bottom: 20, left: 20};
+
+var w = window.innerWidth - margin.left - margin.right,
+    h = window.innerHeight - margin.top - margin.bottom,
     x = d3.scale.linear().range([0, w]),
     y = d3.scale.linear().range([0, h]),
     color = d3.scale.category20c(),
@@ -55,21 +53,24 @@ var treemap = d3.layout.treemap()
     .sticky(true)
     .value(function(d) { return d.size; });
 
-var svg = d3.select("#body").append("div")
+var svg = d3.select("body")
+    .append("div")
     .attr("class", "chart")
     // .style("width", w + "px")
     // .style("height", h + "px")
   .append("svg:svg")
-    // .attr("width", w)
-    // .attr("height", h)
-    .attr("width", "100%")
-    .attr("height", "50%")
+    .attr("width", w)
+    .attr("height", h)
+    // .style("margin-left", -margin.left + "px")
+    // .attr("width", "100%")
+    // .attr("height", "50%")
     .attr("viewBox", "0 0 " + w + " " + h )
       .attr("preserveAspectRatio", "xMidYMid meet")
       .attr("pointer-events", "all")
     .call(d3.behavior.zoom().on("zoom", redraw))
   .append("svg:g")
-    .attr("transform", "translate(.5,.5)");
+    // .attr("transform", "translate(.5,.5)");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 function redraw() {
@@ -92,8 +93,8 @@ d3.json("../data/aggregate_tremap.json", function(data) {
       .on("click", function(d) { return zoom(node == d.parent ? root : d.parent); });
 
   cell.append("svg:rect")
-      .attr("width", function(d) { return d.dx - 1; })
-      .attr("height", function(d) { return d.dy - 1; })
+      .attr("width", function(d) { return (d.dx - 1) > 0 ? (d.dx - 1) : 0; })
+      .attr("height", function(d) { return (d.dy - 1) > 0 ? (d.dy - 1) : 0 ; })
       .style("fill", function(d) { return color(d.parent.name); });
 
   cell.append("svg:text")
@@ -101,8 +102,8 @@ d3.json("../data/aggregate_tremap.json", function(data) {
       .attr("y", function(d) { return d.dy / 2; })
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
-      .text(function(d) { return d.name; })
-      .style("font-size",function(d){return d.size/2 > 12 ? d.size/2 : 12 })
+      .text(function(d) { return d.name })
+      .style("font-size",function(d){ if(d.size == 0) return 0; return  d.size/2 > 12 ? d.size/2.5 : 12 })
       .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
 
   d3.select(window).on("click", function() { zoom(root); });

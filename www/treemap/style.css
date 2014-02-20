@@ -6,7 +6,7 @@ body {
   font-family: "Helvetica Neue", Helvetica;
 }
 
-#chart, #header, #footer {
+#header, #footer {
   position: absolute;
   top: 0;
 }
@@ -31,8 +31,7 @@ body {
 }
 
 #footer {
-  top: 680px;
-  right: 140px;
+  right: 40px;
   text-align: right;
 }
 
