@@ -10,6 +10,7 @@ import argparse
 import os
 import re
 import psycopg2
+from psycopg2.extensions import AsIs
 import random
 from goose3 import Goose
 from tfidf import TfIdf
@@ -50,11 +51,13 @@ class FeedKraken:
         c.execute(
             'SELECT url, last_update, feed_id, etag, modified FROM feeds WHERE active = 1')
         for f in c.fetchall():
-            modified, updated, etag = self.parse(f[0], f[1], f[2], f[3], f[4])
-
-            c.execute('UPDATE feeds SET last_update = %s, etag = %s, modified = %s  WHERE feed_id = %s',
-                      (updated, etag, modified, f[2]))
-            self.db.commit()
+            try:
+                modified, updated, etag = self.parse(f[0], f[1], f[2], f[3], f[4])
+                c.execute('UPDATE feeds SET last_update = %s, etag = %s, modified = %s  WHERE feed_id = %s',
+                          (updated, etag, modified, f[2]))
+                self.db.commit()
+            except Exception as e:
+                print(f"failed to update {f[0]}: {e}")
         c.close()
         self.db.close()
         logging.info('* grab urls complete')
@@ -63,6 +66,10 @@ class FeedKraken:
 
         f = feedparser.parse(url, etag=etag, modified=modified)
         c = self.db.cursor()
+
+        if not hasattr(f, 'status'):
+            print(f)
+            raise ValueError("unknown feed status")
 
         if hasattr(f, 'etag') and f.status != 304:
             etag = f.etag
@@ -83,21 +90,20 @@ class FeedKraken:
                 resp = requests.head(entry.link, headers={
                                      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.73.11 (KHTML, like Gecko) Version/7.0.1 Safari/537.73.11'})
                 canonical_url = resp.url
-                sha1_hash = hashlib.sha1(canonical_url).hexdigest()
+                sha1_hash = hashlib.sha1(canonical_url.encode()).hexdigest()
                 c.execute(
                     'SELECT published FROM articles WHERE hash = %s', (sha1_hash,))
                 row = c.fetchone()
                 if row is not None:
-                    logging.warn('url with hash %s exists with date %s, new date is %s ' % (
-                        sha1_hash, row[0], published))
-                    c.execute(
-                        'SELECT article_hash,updated_on FROM articles_update WHERE article_hash = %s AND updated_on = %s', (sha1_hash, published))
+                    logging.warn(f"URL with hash {sha1_hash} exists with date {row[0]}, new date is {published}")
+                    query_data = (sha1_hash, published)
+                    c.execute('SELECT article_hash,updated_on FROM articles_update WHERE article_hash = %s AND updated_on = %s', query_data)
                     if c.fetchone() is None:
-                        c.execute("INSERT INTO articles_update(article_hash, updated_on, article_day) VALUES (%s,%s,%s)", (
-                            sha1_hash, published, published))
+                        query_data = (sha1_hash, published, published)
+                        c.execute("INSERT INTO articles_update(article_hash, updated_on, article_day) VALUES (%s,%s,%s)", query_data)
                     else:
-                        c.execute(
-                            "UPDATE articles_update SET count_duplicate = count_duplicate + 1 WHERE article_hash = %s AND updated_on = %s", (sha1_hash, published))
+                        query_data = (sha1_hash, published)  # not necessary but here for readability
+                        c.execute("UPDATE articles_update SET count_duplicate = count_duplicate + 1 WHERE article_hash = %s AND updated_on = %s", query_data)
 
                 else:
                     count += 1
@@ -114,8 +120,7 @@ class FeedKraken:
                             )
                     c.execute(
                         "INSERT INTO articles (feed_id,article_id,url,title,category,published,author,description,hash) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)", data)
-        logging.info('feed id %d has %d entries after %s' %
-                     (feed_id, count, start_date))
+        logging.info(f'feed id {feed_id} has {count} entries after {start_date}')
         return (modified, max(tmp_dates), etag)
 
     def loadCountries(self):
@@ -206,23 +211,23 @@ class FeedKraken:
             ag.write(json.dumps(headlines, indent=2))
 
         # nows feeds # AVAILABLE THROUGHT API
-        # headlines = []
-        # c.execute("SELECT title,url,article_day,country,published,country_iso3 FROM articles_headlines_feed limit 100")
-        # for row in c.fetchall():
-        # 	headlines.append({'title':row[0], 'url':row[1] , 'country':row[3], 'published':str(row[4]), 'iso':row[5]})
+        headlines = []
+        c.execute("SELECT title,url,article_day,country,published,country_iso3 FROM articles_headlines_feed limit 100")
+        for row in c.fetchall():
+            headlines.append({'title': row[0], 'url': row[1], 'country': row[3], 'published': str(row[4]), 'iso': row[5]})
 
-        # with open(os.path.join(self.outputpath,"aggregate_news_feed.json"),"w") as ag:
-        # 	ag.write(json.dumps(headlines, indent=2))
+        with open(os.path.join(self.outputpath, "aggregate_news_feed.json"), "w") as ag:
+            ag.write(json.dumps(headlines, indent=2))
 
         # top scores # AVAILABLE THROUGHT API
-        # scores = []
-        # c.execute("SELECT country,total_score,country_iso3 FROM top_country_last_week ")
-        # for row in c.fetchall():
-        # 	if row[1] > 1:
-        # 		scores.append((row[0],str(row[1]),row[2]))
+        scores = []
+        c.execute("SELECT country,total_score,country_iso3 FROM top_country_last_week ")
+        for row in c.fetchall():
+            if row[1] > 1:
+                scores.append((row[0], str(row[1]), row[2]))
 
-        # with open(os.path.join(self.outputpath,"aggregate_top_scores.json"),"w") as ag:
-        # 	ag.write(json.dumps(scores, indent=2))
+        with open(os.path.join(self.outputpath, "aggregate_top_scores.json"), "w") as ag:
+            ag.write(json.dumps(scores, indent=2))
 
         # tree map
         treemap = {'name': 'news', 'children': []}
@@ -237,7 +242,7 @@ class FeedKraken:
             else:
                 continets[continet].append(
                     {'name': row[1], 'size': str(row[2]*5)})
-        for cn, cos in continets.iteritems():
+        for cn, cos in continets.items():
             treemap['children'].append({'name': cn, 'children': cos})
 
         with open(os.path.join(self.outputpath, "aggregate_tremap.json"), "w") as ag:
@@ -463,7 +468,7 @@ ORDER BY ac.article_day """
                 headlines[str(row[0])+'-'+row[1]].append(title)
         self.db.close()
 
-        for hd, contents in headlines.iteritems():
+        for hd, contents in headlines.items():
             print(f'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> {hd}')
             with open('stopwords.txt', 'r') as st:
                 tfidf = TfIdf(stopwords=[x.strip() for x in st.readlines()])
@@ -521,8 +526,7 @@ ORDER BY ac.article_day """
             feed_id = u[4]
 
             try:
-                print("######################################################\n"*5)
-                print(f"hash: {hash_}")
+                print(f"hash: {hash_} {url}")
                 # response = requests.get(url, proxies=proxyDict, headers=headers)
                 response = requests.get(url, headers=headers)
 
@@ -595,7 +599,8 @@ ORDER BY ac.article_day """
             try:
                 country_in_title = 0
 
-                for iso, names in countries.iteritems():
+                for iso, names in countries.items():
+
                     # count the nations
                     for name in names:
                         # count = text.count(name)
@@ -620,13 +625,13 @@ ORDER BY ac.article_day """
                 print(f"title :{title}")
                 print(f"url: {url}")
                 print(text)
-                sorted_x = sorted(country_values.iteritems(),
+                sorted_x = sorted(country_values.items(),
                                   key=operator.itemgetter(1))
                 for t in sorted_x:
                     if t[1] > 0:
                         c_article_country.execute('INSERT INTO article_country( article_hash, country_iso3, article_day, source_feed_id, country_in_title, frequency, occurrences) VALUES (%s,%s,%s,%s,%s,%s,%s)', (
                             hash_, t[0], published.date(), feed_id, country_in_title, float(t[1])/sum_values, t[1]))
-                        print(f'{t[0]}: {t1:3d} ({float(t[1])/sum_values:.2f})')
+                        print(f'{t[0]}: {t[1]:3d} ({float(t[1])/sum_values:.2f})')
                 c_article_country.execute(
                     "UPDATE articles SET flag_text_parsed = 1 WHERE hash = %s", (hash_,))
                 self.db.commit()
@@ -705,6 +710,26 @@ ORDER BY ac.article_day """
         self.db.close()
 
 
+def import_feeds(feeds_file):
+    db = psycopg2.connect(
+        f"dbname={DB_NAME} user={DB_USER} password={DB_PASS} host={DB_HOST}"
+    )
+    c = db.cursor()
+    print(f"loading feeds from {feeds_file}")
+    q_in = "INSERT INTO feeds(%s) VALUES %s ON CONFLICT DO NOTHING;"
+    with open(feeds_file) as fp:
+        records, inserts = 0, 0
+        for feed in json.load(fp).get("feeds", []):
+            columns = feed.keys()
+            values = [feed[column] for column in columns]
+            c.execute(q_in, (AsIs(','.join(columns)), tuple(values)))
+            inserts += c.rowcount
+            records += 1
+    print(f"import completed, processed {records} records, imported {inserts}")
+    db.commit()
+    db.close()
+
+
 def cmd_aggregate(args):
     feed = FeedKraken(outputpath='./www/data')
     feed.grabUrls()
@@ -719,10 +744,14 @@ def cmd_aggregate(args):
 def cmd_export(args):
     feed = FeedKraken(outputpath='./www/data')
     feed.createJsonForMatrix()
-    # feed.exportCountryArticleDetails()
-    feed.exportFeedsInfo()
+    feed.exportCountryArticleDetails()
+    # feed.exportFeedsInfo()
     feed.exportMatrixCountries()
-    # feed.createPHPtable()
+    feed.createPHPtable()
+
+
+def cmd_import_feeds(args):
+    import_feeds(args.file_path)
 
 
 if __name__ == "__main__":
@@ -738,6 +767,18 @@ if __name__ == "__main__":
             'help': 'start the top up service',
             'target': cmd_export,
             'opts': []
+        },
+        {
+            'name': 'import',
+            'help': 'populate the feed list',
+            'target': cmd_import_feeds,
+            'opts': [
+                {
+                    "names": ["-f", "--file-path"],
+                    "default": "feeds.json",
+                    "help": "the json file containing the list of feeds to process",
+                }
+            ]
         },
     ]
     parser = argparse.ArgumentParser()
@@ -760,11 +801,10 @@ if __name__ == "__main__":
     # call the function
     args.func(args)
 
-
-    # options=1|2|3|4	
-    # 1=grab data and generate stats, 
-    # 2=generate stats, 
-    # 3=print tfidf, 
+    # options=1|2|3|4
+    # 1=grab data and generate stats,
+    # 2=generate stats,
+    # 3=print tfidf,
     # 4=print articles similarity""" % (sys.argv[1], sys.argv[0]))
 
     # if sys.argv[1] == '3':
