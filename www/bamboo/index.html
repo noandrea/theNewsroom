@@ -178,10 +178,27 @@
 			var index = 1;
 			var size = data.length;
 
+			// document size
+			var body = document.body;
+			var html = document.documentElement;
+
+			var page_height = Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+
 			var h_start = 300;
 			var h_end =   180;
 			var h_step =  (h_start - h_end)/size;
 			var h_current = h_start;
+
+			sum_rank = 0
+			data.forEach(function(entry){
+				console.log(entry[1])
+				sum_rank += parseFloat(entry[1])
+			});
+			console.log("sum_rank", sum_rank)
+			console.log("len ranks", data.length)
+			console.log("page height", page_height)
+			mul = page_height / sum_rank
 
 			data.forEach(function(entry){
 				var rank = entry[1]
@@ -197,8 +214,10 @@
 				var li = $('<li  style="background-color:hsl('+h_current+',79%,54%)""> </li>')
 					.attr('data-rank',rank);
 				h_current -= h_step;
+				
 
-				var h = rank * 2;
+
+				var h = rank * mul;
 	 			if(h < 5) h = 5;
 	 			a.height(h);
 	 			var alpha = (h - 14) / 150;
@@ -224,9 +243,6 @@
 
 				rainbow.append(li)
 				index++;
-
-
-				
 
 			})
 
