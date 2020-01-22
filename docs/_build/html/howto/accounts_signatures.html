@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Accounts and Signatures &mdash; aepp-sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> aepp-sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                6.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">“How-to” guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snippets/index.html">Code Snippets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">aepp-sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Accounts and Signatures</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/accounts_signatures.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="accounts-and-signatures">
+<h1>Accounts and Signatures<a class="headerlink" href="#accounts-and-signatures" title="Permalink to this headline">¶</a></h1>
+<p>The Aeternity blockchain uses the account/balance model,
+and here are listed all the possibility regarding handling
+accounts and signatures</p>
+<div class="section" id="create-an-account-non-hd">
+<h2>Create an account (non HD)<a class="headerlink" href="#create-an-account-non-hd" title="Permalink to this headline">¶</a></h2>
+<p>Generate a new account</p>
+<dl>
+<dt>::</dt><dd><p># import the Account class from signing
+from aeternity.signing import Account</p>
+<p>account = Account.generate()
+print(account) # will print the public key/address of the account</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="save-account-on-file">
+<h2>Save account on file<a class="headerlink" href="#save-account-on-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the Account class from signing</span>
+<span class="kn">from</span> <span class="nn">aeternity.signing</span> <span class="kn">import</span> <span class="n">Account</span>
+
+<span class="c1"># generate a new account</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+<span class="c1"># save to file</span>
+<span class="n">account</span><span class="o">.</span><span class="n">save_to_keystore_file</span><span class="p">(</span><span class="s2">&quot;keystore_file_path&quot;</span><span class="p">,</span> <span class="s2">&quot;My Password&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="load-account">
+<h2>Load account<a class="headerlink" href="#load-account" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the Account class from signing</span>
+<span class="kn">from</span> <span class="nn">aeternity.signing</span> <span class="kn">import</span> <span class="n">Account</span>
+
+<span class="c1"># load from file</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">from_keystore</span><span class="p">(</span><span class="s2">&quot;keystore_file_path&quot;</span><span class="p">,</span> <span class="s2">&quot;My Password&quot;</span><span class="p">)</span>
+
+<span class="c1"># from secret key string hex encoded</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">from_secret_key_string</span><span class="p">(</span><span class="s2">&quot;mysecretkeystring...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To synchronize an Account with data from
+the node, such as the account type (Basic or GA)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the Account class from signing</span>
+<span class="kn">from</span> <span class="nn">aeternity.node</span> <span class="kn">import</span> <span class="n">NodeClient</span><span class="p">,</span> <span class="n">Config</span>
+
+<span class="c1"># initialize the node client</span>
+<span class="n">node_cli</span> <span class="o">=</span> <span class="n">NodeClient</span><span class="p">()</span>
+
+<span class="c1"># synchronize with the node api</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">node_cli</span><span class="o">.</span><span class="n">get_account</span><span class="p">(</span><span class="n">keystore_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="print-the-secret-key-of-an-account">
+<h2>Print the secret key of an account<a class="headerlink" href="#print-the-secret-key-of-an-account" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The secret key is printed in “plain text”, by printing it on the terminal or saving
+it without encryption you expose your account</p>
+</div>
+<p>the command to print the public and secret key of an account saved in a keystore file is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli account address --secret-key KEYSTORE_FILENAME.json
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>➜ aecli account address BOB.json --secret-key
+Enter the account password:
+!Warning! this will print your secret key on the screen, are you sure? [y/N]: y
+&lt;account&gt;
+  Address ___________________________________________ ak_2P44NhGFT7fP1TFpZ62FwabWP9djg5sDwFNDVVpiGgd3p4yA7X
+  Secretkey _________________________________________ c226bf650f30740287f77a715............f49ddff758971112fb5cfb0e66975a8f
+&lt;/account&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Andrea Giacobino, Shubhendu Shekhar
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

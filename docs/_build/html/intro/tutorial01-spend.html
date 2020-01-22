@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Transfer funds &mdash; aepp-sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Deploying a contract" href="tutorial02-contracts-deploy.html" />
+    <link rel="prev" title="Quick install guide" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> aepp-sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                6.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Transfer funds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02-contracts-deploy.html">Deploying a contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02-contracts-call.html">Interacting with a contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03-aens.html">Claimin a name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04-ga.html">Using Generalized Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial05-cli.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial06-hdwallet.html">Generating and using a HD Wallet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">“How-to” guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snippets/index.html">Code Snippets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">aepp-sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Getting started</a> &raquo;</li>
+        
+      <li>Transfer funds</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intro/tutorial01-spend.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="transfer-funds">
+<h1>Transfer funds<a class="headerlink" href="#transfer-funds" title="Permalink to this headline">¶</a></h1>
+<p>Let’s learn by example.</p>
+<p>Throughout this tutorial, we’ll walk you through the creation of a basic
+script to transfer funds from an account to another.</p>
+<p>It’ll consist of three parts:</p>
+<ul class="simple">
+<li><p>Generate 2 accounts via command line client</p></li>
+<li><p>Get some funds for the first account</p></li>
+<li><p>Transfer the funds from an account to the other</p></li>
+</ul>
+<p>We’ll assume you have <a class="reference internal" href="install.html"><span class="doc">the SDK installed</span></a> already. You can
+tell the SDK is installed and which version by running the following command
+in a shell prompt (indicated by the $ prefix):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli --version
+</pre></div>
+</div>
+<p>First step will be to generate two new accounts using the command line client:</p>
+<p>First import the required libraries</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="kn">from</span> <span class="nn">aeternity.node</span> <span class="kn">import</span> <span class="n">NodeClient</span><span class="p">,</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">aeternity.signing</span> <span class="kn">import</span> <span class="n">Account</span>
+<span class="kn">from</span> <span class="nn">aeternity</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+</pre></div>
+</div>
+<p>Then instantiate the node client and generate 2 accounts</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">NODE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TEST_URL&#39;</span><span class="p">,</span> <span class="s1">&#39;https://testnet.aeternity.io&#39;</span><span class="p">)</span>
+
+<span class="n">node_cli</span> <span class="o">=</span> <span class="n">NodeClient</span><span class="p">(</span><span class="n">Config</span><span class="p">(</span>
+    <span class="n">external_url</span><span class="o">=</span><span class="n">NODE_URL</span><span class="p">,</span>
+    <span class="n">blocking_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="c1"># generate ALICE account </span>
+<span class="n">alice</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+<span class="c1"># generate BOB account</span>
+<span class="n">bob</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+<span class="c1"># retrieve the balances for the accounts</span>
+<span class="n">bob_balance</span> <span class="o">=</span> <span class="n">node_cli</span><span class="o">.</span><span class="n">get_balance</span><span class="p">(</span><span class="n">bob</span><span class="p">)</span>
+<span class="n">alice_balance</span> <span class="o">=</span> <span class="n">node_cli</span><span class="o">.</span><span class="n">get_balance</span><span class="p">(</span><span class="n">alice</span><span class="p">)</span>
+
+<span class="c1"># print the balance of the two accounts</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alice address is {alice.get_address()}&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;with balance {utils.format_amount(alice_balance)}&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bob address is {bob.get_address()}&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;with balance {utils.format_amount(bob_balance)}&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Now copy the Alice address and paste it into the <a class="reference external" href="https://testnet.faucet.aepps.com">Aeternity Faucet</a> to top up the account; once the Alice account has some positive balance we can execute the spend transaction:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="c1">#TODO pause the execution while using the faucet</span>
+<span class="c1"># execute the spend transaction</span>
+<span class="n">tx</span> <span class="o">=</span> <span class="n">node_cli</span><span class="o">.</span><span class="n">spend</span><span class="p">(</span><span class="n">alice</span><span class="p">,</span> <span class="n">bob</span><span class="o">.</span><span class="n">get_address</span><span class="p">(),</span> <span class="s2">&quot;3AE&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;transaction hash: </span><span class="si">{tx.hash}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;inspect transaction at </span><span class="si">{NODE_URL}</span><span class="s2">/v2/transactions/</span><span class="si">{tx.hash}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>And finally verify the new balance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># retrieve the balances for the accounts</span>
+<span class="n">bob_balance</span> <span class="o">=</span> <span class="n">node_cli</span><span class="o">.</span><span class="n">get_balance</span><span class="p">(</span><span class="n">bob</span><span class="p">)</span>
+<span class="n">alice_balance</span> <span class="o">=</span> <span class="n">node_cli</span><span class="o">.</span><span class="n">get_balance</span><span class="p">(</span><span class="n">alice</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alice balance is {utils.format_amount(alice_balance)}&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bob balance is {utils.format_amount(bob_balance)}&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Thats it! You have successfully executed your transaction in the Aeternity Blockchain testnet network. For the mainnet network the procedure is the same except you will have to get some tokens via an exchange or via other means.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial02-contracts-deploy.html" class="btn btn-neutral float-right" title="Deploying a contract" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral float-left" title="Quick install guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Andrea Giacobino, Shubhendu Shekhar
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

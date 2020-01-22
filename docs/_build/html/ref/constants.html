@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Constants &mdash; aepp-sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FAQ" href="../faq/index.html" />
+    <link rel="prev" title="TxObject" href="txobject.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> aepp-sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                6.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">“How-to” guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="client_and_config.html">Node Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txobject.html">TxObject</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snippets/index.html">Code Snippets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">aepp-sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+        
+      <li>Constants</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/ref/constants.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="constants">
+<h1>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h1>
+<p>The following are a list of constants used throughout the SDK</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># fee calculation</span>
+<span class="n">BASE_GAS</span> <span class="o">=</span> <span class="mi">15000</span>
+<span class="n">GAS_PER_BYTE</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">GAS_PRICE</span> <span class="o">=</span> <span class="mi">1000000000</span>
+<span class="c1"># default relative ttl in number of blocks  for executing transaction on the chain</span>
+<span class="n">MAX_TX_TTL</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">TX_TTL</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">FEE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># contracts</span>
+<span class="n">CONTRACT_GAS</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">CONTRACT_GAS_PRICE</span> <span class="o">=</span> <span class="mi">1000000000</span>
+<span class="n">CONTRACT_DEPOSIT</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">CONTRACT_AMOUNT</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># https://github.com/aeternity/protocol/blob/master/oracles/oracles.md#technical-aspects-of-oracle-operations</span>
+<span class="n">ORACLE_VM_VERSION</span> <span class="o">=</span> <span class="n">identifiers</span><span class="o">.</span><span class="n">NO_VM</span>
+<span class="n">ORACLE_TTL_TYPE</span> <span class="o">=</span> <span class="n">identifiers</span><span class="o">.</span><span class="n">ORACLE_TTL_TYPE_DELTA</span>
+<span class="n">ORACLE_QUERY_FEE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ORACLE_TTL_VALUE</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">ORACLE_QUERY_TTL_VALUE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">ORACLE_RESPONSE_TTL_VALUE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># Chain</span>
+<span class="n">KEY_BLOCK_INTERVAL</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># average time between key-blocks in minutes</span>
+<span class="n">KEY_BLOCK_CONFIRMATION_NUM</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># number of key blocks to wait for to consider a key-block confirmed</span>
+<span class="c1"># network id</span>
+<span class="n">NETWORK_ID</span> <span class="o">=</span> <span class="n">identifiers</span><span class="o">.</span><span class="n">NETWORK_ID_MAINNET</span>
+<span class="c1"># TUNING</span>
+<span class="n">POLL_TX_MAX_RETRIES</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># used in exponential backoff when checking a transaction</span>
+<span class="n">POLL_TX_RETRIES_INTERVAL</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># in seconds</span>
+<span class="n">POLL_BLOCK_MAX_RETRIES</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># number of retries</span>
+<span class="n">POLL_BLOCK_RETRIES_INTERVAL</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># in seconds</span>
+<span class="c1"># channels</span>
+<span class="n">CHANNEL_ENDPOINT</span> <span class="o">=</span> <span class="s1">&#39;channel&#39;</span>
+<span class="n">CHANNEL_URL</span> <span class="o">=</span> <span class="s1">&#39;ws://127.0.0.1:3014&#39;</span>
+<span class="c1"># Generalized accounts</span>
+<span class="n">GA_AUTH_FUNCTION</span> <span class="o">=</span> <span class="s2">&quot;authorize&quot;</span>
+<span class="n">GA_MAX_AUTH_FUN_GAS</span> <span class="o">=</span> <span class="mi">50000</span>
+<span class="n">GA_ACCOUNTS_NONCE</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># for tx in ga transactions the nonce must be 0</span>
+<span class="c1"># Aens</span>
+<span class="c1"># max number of block into the future that the name is going to be available</span>
+<span class="c1"># https://github.com/aeternity/protocol/blob/master/AENS.md#aens-entry</span>
+<span class="n">NAME_MAX_TTL</span> <span class="o">=</span> <span class="mi">50000</span>  <span class="c1"># in blocks</span>
+<span class="n">NAME_MAX_CLIENT_TTL</span> <span class="o">=</span> <span class="mi">84600</span>  <span class="c1"># in seconds</span>
+<span class="n">NAME_FEE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># see https://github.com/aeternity/aeternity/blob/72e440b8731422e335f879a31ecbbee7ac23a1cf/apps/aecore/src/aec_governance.erl#L67</span>
+<span class="n">NAME_FEE_MULTIPLIER</span> <span class="o">=</span> <span class="mi">100000000000000</span>
+<span class="n">NAME_FEE_BID_INCREMENT</span> <span class="o">=</span> <span class="mf">0.05</span>  <span class="c1"># the increment is in percentage</span>
+<span class="c1"># see https://github.com/aeternity/aeternity/blob/72e440b8731422e335f879a31ecbbee7ac23a1cf/apps/aecore/src/aec_governance.erl#L272</span>
+<span class="n">NAME_BID_TIMEOUT_BLOCKS</span> <span class="o">=</span> <span class="mi">480</span>  <span class="c1"># ~1 day</span>
+<span class="n">NAME_BID_MAX_LENGTH</span> <span class="o">=</span> <span class="mi">12</span>  <span class="c1"># this is the max length for a domain to be part of a bid</span>
+<span class="c1"># ref: https://github.com/aeternity/aeternity/blob/72e440b8731422e335f879a31ecbbee7ac23a1cf/apps/aecore/src/aec_governance.erl#L290</span>
+<span class="c1"># bid ranges:</span>
+<span class="n">NAME_BID_RANGES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">31</span><span class="p">:</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">30</span><span class="p">:</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">29</span><span class="p">:</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">28</span><span class="p">:</span> <span class="mi">13</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">27</span><span class="p">:</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">26</span><span class="p">:</span> <span class="mi">34</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">25</span><span class="p">:</span> <span class="mi">55</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">24</span><span class="p">:</span> <span class="mi">89</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">23</span><span class="p">:</span> <span class="mi">144</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">22</span><span class="p">:</span> <span class="mi">233</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">21</span><span class="p">:</span> <span class="mi">377</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">20</span><span class="p">:</span> <span class="mi">610</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">19</span><span class="p">:</span> <span class="mi">987</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="mi">1597</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">17</span><span class="p">:</span> <span class="mi">2584</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mi">4181</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">15</span><span class="p">:</span> <span class="mi">6765</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="mi">10946</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">17711</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">28657</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">46368</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">75025</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="mi">121393</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="mi">196418</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mi">317811</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">514229</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">832040</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">1346269</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">2178309</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">3524578</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">5702887</span> <span class="o">*</span> <span class="n">NAME_FEE_MULTIPLIER</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># ref: https://github.com/aeternity/aeternity/blob/72e440b8731422e335f879a31ecbbee7ac23a1cf/apps/aecore/src/aec_governance.erl#L273</span>
+<span class="c1"># name bid timeouts</span>
+<span class="n">NAME_BID_TIMEOUTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">NAME_BID_TIMEOUT_BLOCKS</span><span class="p">,</span>  <span class="c1"># 480 blocks</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">31</span> <span class="o">*</span> <span class="n">NAME_BID_TIMEOUT_BLOCKS</span><span class="p">,</span>  <span class="c1"># 14880 blocks</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">62</span> <span class="o">*</span> <span class="n">NAME_BID_TIMEOUT_BLOCKS</span><span class="p">,</span>  <span class="c1"># 29760 blocks</span>
+<span class="p">}</span>
+
+<span class="c1"># dry run</span>
+<span class="n">DRY_RUN_ADDRESS</span> <span class="o">=</span> <span class="s2">&quot;ak_11111111111111111111111111111111273Yts&quot;</span>
+<span class="n">DRY_RUN_AMOUNT</span> <span class="o">=</span> <span class="mi">100000000000000000000000000000000000</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../faq/index.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="txobject.html" class="btn btn-neutral float-left" title="TxObject" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Andrea Giacobino, Shubhendu Shekhar
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Command Line Interface (CLI) &mdash; aepp-sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Generating and using a HD Wallet" href="tutorial06-hdwallet.html" />
+    <link rel="prev" title="Using Generalized Accounts" href="tutorial04-ga.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> aepp-sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                6.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01-spend.html">Transfer funds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02-contracts-deploy.html">Deploying a contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02-contracts-call.html">Interacting with a contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03-aens.html">Claimin a name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04-ga.html">Using Generalized Accounts</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Command Line Interface (CLI)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cli-usage">CLI Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial06-hdwallet.html">Generating and using a HD Wallet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">“How-to” guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snippets/index.html">Code Snippets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">aepp-sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Getting started</a> &raquo;</li>
+        
+      <li>Command Line Interface (CLI)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intro/tutorial05-cli.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="command-line-interface-cli">
+<h1>Command Line Interface (CLI)<a class="headerlink" href="#command-line-interface-cli" title="Permalink to this headline">¶</a></h1>
+<p>We’ll assume you have <a class="reference internal" href="install.html"><span class="doc">the SDK installed</span></a> already. You can
+tell the SDK is installed and which version by running the following command
+in a shell prompt (indicated by the $ prefix):</p>
+<div class="section" id="cli-usage">
+<h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline">¶</a></h2>
+<p>See below for programmatic usage</p>
+<p>You can launch the command line tool using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli
+</pre></div>
+</div>
+<p>Available commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Usage</span><span class="p">:</span> <span class="n">aecli</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="n">COMMAND</span> <span class="p">[</span><span class="n">ARGS</span><span class="p">]</span><span class="o">...</span>
+
+  <span class="n">Welcome</span> <span class="n">to</span> <span class="n">the</span> <span class="n">aecli</span> <span class="n">client</span><span class="o">.</span>
+
+  <span class="n">The</span> <span class="n">client</span> <span class="ow">is</span> <span class="n">to</span> <span class="n">interact</span> <span class="k">with</span> <span class="n">an</span> <span class="n">node</span> <span class="n">node</span><span class="o">.</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">--</span><span class="n">version</span>            <span class="n">Show</span> <span class="n">the</span> <span class="n">version</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+  <span class="o">-</span><span class="n">u</span><span class="p">,</span> <span class="o">--</span><span class="n">url</span> <span class="n">URL</span>        <span class="n">Node</span> <span class="n">node</span> <span class="n">url</span>
+  <span class="o">-</span><span class="n">d</span><span class="p">,</span> <span class="o">--</span><span class="n">debug</span><span class="o">-</span><span class="n">url</span> <span class="n">URL</span>
+  <span class="o">--</span><span class="n">force</span>              <span class="n">Ignore</span> <span class="n">node</span> <span class="n">version</span> <span class="n">compatibility</span> <span class="n">check</span>
+  <span class="o">--</span><span class="n">wait</span>               <span class="n">Wait</span> <span class="k">for</span> <span class="n">transactions</span> <span class="n">to</span> <span class="n">be</span> <span class="n">included</span>
+  <span class="o">--</span><span class="n">json</span>               <span class="n">Print</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">JSON</span> <span class="nb">format</span>
+  <span class="o">--</span><span class="n">version</span>            <span class="n">Show</span> <span class="n">the</span> <span class="n">version</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+  <span class="o">--</span><span class="n">help</span>               <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+
+<span class="n">Commands</span><span class="p">:</span>
+  <span class="n">account</span>  <span class="n">Handle</span> <span class="n">account</span> <span class="n">operations</span>
+  <span class="n">chain</span>    <span class="n">Interact</span> <span class="k">with</span> <span class="n">the</span> <span class="n">blockchain</span>
+  <span class="n">config</span>   <span class="n">Print</span> <span class="n">the</span> <span class="n">client</span> <span class="n">configuration</span>
+  <span class="n">inspect</span>  <span class="n">Get</span> <span class="n">information</span> <span class="n">on</span> <span class="n">transactions</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span><span class="o">...</span>
+  <span class="n">name</span>     <span class="n">Handle</span> <span class="n">name</span> <span class="n">lifecycle</span>
+  <span class="n">oracle</span>   <span class="n">Interact</span> <span class="k">with</span> <span class="n">oracles</span>
+<span class="n">tx</span>       <span class="n">Handle</span> <span class="n">transactions</span> <span class="n">creation</span>
+</pre></div>
+</div>
+<p>## Environment variables</p>
+<p>Use the environment variables</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NODE_URL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NODE_URL_DEBUG</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="example-usage">
+<h2>Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<p>The following is a walkthrough
+to execute a spend transaction on the <a class="reference external" href="https://testnet.aeternal.io">testnet</a> network</p>
+<ol class="arabic simple">
+<li><p>Set the environment variables</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ export NODE_URL=https://testnet.aeternity.io
+</pre></div>
+</div>
+<p>❗ When not set the command line client will connect to mainnet</p>
+<ol class="arabic simple">
+<li><p>Retrieve the top block</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli chain top
+&lt;top for node at https://testnet.aeternity.io &gt;
+  Hash ______________________________________________ mh_2GKNC4Nft3mTtiUizsgmNySM6bmrtEk47AFd7QYxGLni6dHuSH
+  Height ____________________________________________ 171074
+  Pof hash __________________________________________ no_fraud
+  Prev hash _________________________________________ mh_2C1qtupSRTGhfgXStkFgPgTU7EtRpbj3R6JeqY94mKDnUM5erw
+  Prev key hash _____________________________________ kh_2mMnrh68xvs25qqnY6Q6BCYPPGEfW2AshvThNDugut12KGCjTp
+  Signature _________________________________________ sg_UGs78hj7QJ96TZR4vLmrUPmXW2STFPQCR49q1mEvyEHWotC1k8DB6qfqwJGFjRtZL27rSEitLRee5wCqbs4XtGVZAFiCk
+  State hash ________________________________________ bs_2ZvCLwHsVPkEn43qvviRpr1vQ1snpGd1izex6kScbU2Zd99s9S
+  Time ______________________________________________ 2019-11-20T11:11:22.934000+00:00
+  Txs hash __________________________________________ bx_D4Y9x2RjobeCEETZqbVgYFsNu6UKhdSTAJXdXZBb5JbAuW7QA
+  Version ___________________________________________ 4
+&lt;/top for node at https://testnet.aeternity.io &gt;
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Create a new account</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli account create Bob.json
+Enter the account password []:
+&lt;account&gt;
+  Address ___________________________________________ ak_BobY97QUVR4iDLg4k3RKmy6shZYx9FR75nLaN33GsVmSnhWxn
+  Path ______________________________________________ /.../Bob.json
+&lt;/account&gt;
+</pre></div>
+</div>
+<p>❗ Make sure that you use a long and difficult-to-guess password for an account that you plan to use on mainnet</p>
+<ol class="arabic simple">
+<li><p>Go to [testnet.faucet.aepps.com](<a class="reference external" href="https://testnet.faucet.aepps.com">https://testnet.faucet.aepps.com</a>) and top up your account</p></li>
+<li><p>Inspect the transaction reported by the faucet app</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli inspect th_2CV4a7xxDYj5ysaDjXNoCSLxnkowGM5bbyAvtdoPvHZwTSYykX
+&lt;transaction&gt;
+  &lt;data&gt;
+    Block height ____________________________________ 12472
+    Block hash ______________________________________ mh_2vjFffExUZPVGo3q6CHRSzxVUhzLcUnQQUWpijFtSvKfoHwQWe
+    Hash ____________________________________________ th_2CV4a7xxDYj5ysaDjXNoCSLxnkowGM5bbyAvtdoPvHZwTSYykX
+    &lt;signatures 1&gt;
+      Signature #1 __________________________________ sg_WtPeyKWN4zmcnZZXpAxCT8EvjF3qSjiUidc9cdxQooxe1JCLADTVbKDFm9S5bNwv3yq57PQKTG4XuUP4eTzD5jymPHpNu
+    &lt;/signatures&gt;
+    &lt;tx&gt;
+      &lt;data&gt;
+        Amount ______________________________________ 5AE
+        Fee _________________________________________ 2.0000E-14AE
+        Nonce _______________________________________ 146
+        Payload _____________________________________ ba_RmF1Y2V0IFR4tYtyuw==
+        Recipient id ________________________________ ak_2ioQbdSViNKjknaLUWphdRjpbTNVpMHpXf9X5ZkoVrhrCZGuyW
+        Sender id ___________________________________ ak_2iBPH7HUz3cSDVEUWiHg76MZJ6tZooVNBmmxcgVK6VV8KAE688
+        Ttl _________________________________________ 12522
+        Type ________________________________________ SpendTx
+        Version _____________________________________ 1
+        Tag _________________________________________ 12
+      &lt;/data&gt;
+      &lt;metadata&gt;
+        Min fee _____________________________________ 0.00001706AE
+      &lt;/metadata&gt;
+      Tx ____________________________________________ tx_+GEMAaEB4TK48d23oE5jt/qWR5pUu8UlpTGn8bwM5JISGQMGf7ChAeKbvpV6jbxy/le3tbquBoRjk0ehgOsRdSzc09bKfw3uiEVjkYJE9AAAgk4ggjDqgZKJRmF1Y2V0IFR47rafGA==
+    &lt;/tx&gt;
+    Tag _____________________________________________ 11
+    Type ____________________________________________ SignedTx
+    Version _________________________________________ 1
+  &lt;/data&gt;
+  Tx ________________________________________________ tx_+KsLAfhCuEDkb9XQq/ihtZ+DNbDBI/9ntVGwcJJLCV0qZE8c9wMxAeTyyG3hVqthIco/NLuaVQ0N3XRYhYb6PsYOjAf8hzMJuGP4YQwBoQHhMrjx3begTmO3+pZHmlS7xSWlMafxvAzkkhIZAwZ/sKEB4pu+lXqNvHL+V7e1uq4GhGOTR6GA6xF1LNzT1sp/De6IRWORgkT0AACCTiCCMOqBkolGYXVjZXQgVHgQZGwg
+  Hash ______________________________________________ th_2CV4a7xxDYj5ysaDjXNoCSLxnkowGM5bbyAvtdoPvHZwTSYykX
+&lt;/transaction&gt;
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Create another account</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli account create Alice.json
+Enter the account password []:
+&lt;account&gt;
+  Address ___________________________________________ ak_9j8akv2PE2Mnt5khFeDvS9BGc3TBBrJkfcgaJHgBXcLLagX8M
+  Path ______________________________________________ /.../Alice.json
+&lt;/account&gt;
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Transfer some tokens to an account to the other</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli account spend Bob.json ak_9j8akv2PE2Mnt5khFeDvS9BGc3TBBrJkfcgaJHgBXcLLagX8M 1AE
+Enter the account password []:
+&lt;spend transaction&gt;
+  &lt;data&gt;
+    Tag _____________________________________________ 12
+    Vsn _____________________________________________ 1
+    Sender id _______________________________________ ak_BobY97QUVR4iDLg4k3RKmy6shZYx9FR75nLaN33GsVmSnhWxn
+    Recipient id ____________________________________ ak_9j8akv2PE2Mnt5khFeDvS9BGc3TBBrJkfcgaJHgBXcLLagX8M
+    Amount __________________________________________ 1AE
+    Fee _____________________________________________ 0.00001686AE
+    Ttl _____________________________________________ 0
+    Nonce ___________________________________________ 4
+    Payload _________________________________________
+  &lt;/data&gt;
+  Metadata
+  Tx ________________________________________________ tx_+KMLAfhCuEAKN05UwTV0fSgO5woziVNnAMBcDrh46XlNFTZTJQlI05fz/8pVSyrb1guCLcw8n7++O887k/JEu6/XHcCSHOMMuFv4WQwBoQEYh8aMDs7saMDBvys+lbKds3Omnzm4crYNbs9xGolBm6EBE9B4l/BeyxMO//3ANxwyT+ZHL52j9nAZosRe/YFuK4eIDeC2s6dkAACGD1WGT5gAAASAN24JGA==
+  Hash ______________________________________________ th_2gAL72dtnaeDcZoZA9MbfSL1JrWzNErMJuikmTRvBY8zhkGh91
+  Signature _________________________________________ sg_2LX9hnJRiYGSspzpS34QeN3PLT9bGSkFRbad9LXvLj5QUFoV5eHRf9SueDgLiiquCGbeFEBPBe7xMJidf8NMSuF16dngr
+  Network id ________________________________________ ae_uat
+&lt;/spend transaction&gt;
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Verify the balance of the new account</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ aecli inspect ak_9j8akv2PE2Mnt5khFeDvS9BGc3TBBrJkfcgaJHgBXcLLagX8M
+&lt;account&gt;
+  Balance ___________________________________________ 1AE
+  Id ________________________________________________ ak_9j8akv2PE2Mnt5khFeDvS9BGc3TBBrJkfcgaJHgBXcLLagX8M
+  Kind ______________________________________________ basic
+  Nonce _____________________________________________ 0
+  Payable ___________________________________________ True
+&lt;/account&gt;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial06-hdwallet.html" class="btn btn-neutral float-right" title="Generating and using a HD Wallet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial04-ga.html" class="btn btn-neutral float-left" title="Using Generalized Accounts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Andrea Giacobino, Shubhendu Shekhar
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

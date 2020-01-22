@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Interacting with a contract &mdash; aepp-sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Claimin a name" href="tutorial03-aens.html" />
+    <link rel="prev" title="Deploying a contract" href="tutorial02-contracts-deploy.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> aepp-sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                6.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="install.html">Quick install guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial01-spend.html">Transfer funds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial02-contracts-deploy.html">Deploying a contract</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Interacting with a contract</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-sophia-contract">Sample Sophia Contract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#importing-required-classes-and-methods">Importing required classes and methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initializing-nodeclient-and-compiler">Initializing NodeClient and Compiler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-an-account">Generate an Account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-the-contract-from-file-and-initialize">Read the Contract from file and initialize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#call-the-contract-methods">Call the contract methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial03-aens.html">Claimin a name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial04-ga.html">Using Generalized Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial05-cli.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial06-hdwallet.html">Generating and using a HD Wallet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html">Contributing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">“How-to” guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/index.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snippets/index.html">Code Snippets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">aepp-sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Getting started</a> &raquo;</li>
+        
+      <li>Interacting with a contract</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intro/tutorial02-contracts-call.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="interacting-with-a-contract">
+<h1>Interacting with a contract<a class="headerlink" href="#interacting-with-a-contract" title="Permalink to this headline">¶</a></h1>
+<p>This guide describes how you can leverage aepp-sdk interact
+with a deployed aeternity smart contract.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Sophia: An Æternity Blockchain Language</p>
+<p>The Sophia is a language in the ML family.
+It is strongly typed and has restricted mutable state.
+Check out more about sophia <a class="reference external" href="https://github.com/aeternity/protocol/blob/master/contracts/sophia.md">here</a>.</p>
+</div>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>An account with some initial AE</p></li>
+<li><p>An address/contract_id of a deployed contract</p></li>
+<li><p>An aeternity node</p></li>
+<li><p>A sophia aehttp compiler</p></li>
+</ol>
+<div class="admonition-assumptions admonition">
+<p class="admonition-title">Assumptions</p>
+<p>We’re going to assume that you have working knowledge of the SDK and
+know how to create an Account instance, a NodeClient, and a CompilerClient.</p>
+</div>
+</div>
+<div class="section" id="sample-sophia-contract">
+<h2>Sample Sophia Contract<a class="headerlink" href="#sample-sophia-contract" title="Permalink to this headline">¶</a></h2>
+<p>Below is the sample sophia contract that we’ll use in this guide.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@compiler &gt;= 4
+
+contract CryptoHamster =
+
+    record state = {
+        index : int, 
+        map_hamsters : map(string, hamster), 
+        testvalue: int}
+
+    record hamster = {
+        id : int,
+        name : string,
+        dna : int}
+
+    stateful entrypoint init() = 
+        { index = 1,
+            map_hamsters = {},
+            testvalue = 42}
+    
+    public entrypoint read_test_value() : int =
+        state.testvalue
+    
+    public entrypoint return_caller() : address =
+        Call.caller
+
+    public entrypoint cause_error() : unit =
+        require(2 == 1, &quot;require failed&quot;) 
+
+    public stateful entrypoint add_test_value(one: int, two: int) : int =
+        put(state{testvalue = one + two})
+        one + two
+    
+    public entrypoint locally_add_two(one: int, two: int) : int =
+        one + two
+    
+    public stateful entrypoint statefully_add_two(one: int, two: int) =
+        put(state{testvalue = one + two})
+    
+    stateful entrypoint create_hamster(hamster_name: string) =
+        require(!name_exists(hamster_name), &quot;Name is already taken&quot;)
+        let dna : int = generate_random_dna(hamster_name)
+        create_hamster_by_name_dna(hamster_name, dna)
+
+    entrypoint name_exists(name: string) : bool =
+        Map.member(name, state.map_hamsters)
+
+    entrypoint get_hamster_dna(name: string, test: option(int)) : int =
+        require(name_exists(name), &quot;There is no hamster with that name!&quot;)
+
+        let needed_hamster : hamster = state.map_hamsters[name]
+
+        needed_hamster.dna
+
+    private stateful function create_hamster_by_name_dna(name: string, dna: int) =
+        let new_hamster : hamster = {
+            id = state.index,
+            name = name,
+            dna = dna}
+
+        put(state{map_hamsters[name] = new_hamster})
+        put(state{index = (state.index + 1)})
+
+    private function generate_random_dna(name: string) : int =
+        get_block_hash_bytes_as_int() - Chain.timestamp + state.index
+
+    private function get_block_hash_bytes_as_int() : int =
+        switch(Chain.block_hash(Chain.block_height - 1))
+            None =&gt; abort(&quot;blockhash not found&quot;)
+            Some(bytes) =&gt; Bytes.to_int(bytes)
+
+    entrypoint test(name: string) : hash =
+        String.sha3(name)
+</pre></div>
+</div>
+</div>
+<div class="section" id="importing-required-classes-and-methods">
+<h2>Importing required classes and methods<a class="headerlink" href="#importing-required-classes-and-methods" title="Permalink to this headline">¶</a></h2>
+<p>We need to import the following classes to use contracts.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">aeternity.node</span> <span class="kn">import</span> <span class="n">NodeClient</span><span class="p">,</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">aeternity.compiler</span> <span class="kn">import</span> <span class="n">CompilerClient</span>
+<span class="kn">from</span> <span class="nn">aeternity.contract_native</span> <span class="kn">import</span> <span class="n">ContractNative</span>
+<span class="kn">from</span> <span class="nn">aeternity.signing</span> <span class="kn">import</span> <span class="n">Account</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initializing-nodeclient-and-compiler">
+<h2>Initializing NodeClient and Compiler<a class="headerlink" href="#initializing-nodeclient-and-compiler" title="Permalink to this headline">¶</a></h2>
+<p>Below are the steps required to initialize the <cite>NodeClient</cite> and <cite>Compiler</cite>.
+As you can see below, during the initialization of <cite>NodeClient</cite> we’re also providing the <cite>internal_url</cite>.</p>
+<p><cite>internal_url</cite> provides the debug endpoint to <cite>dry_run</cite> a contract method which
+can also be used to do static calls on deployed contracts and this is what exactly we’re going to use this for.</p>
+<p>You can also not provide the <cite>internal_url</cite> but then you’ll have to disable the use of <cite>dry-run</cite> endpoint.
+We’ll see how to do that when we initialize our contract.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NODE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TEST_URL&#39;</span><span class="p">,</span> <span class="s1">&#39;http://127.0.0.1:3013&#39;</span><span class="p">)</span>
+<span class="n">NODE_INTERNAL_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TEST_DEBUG_URL&#39;</span><span class="p">,</span> <span class="s1">&#39;http://127.0.0.1:3113&#39;</span><span class="p">)</span>
+<span class="n">COMPILER_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;TEST_COMPILER__URL&#39;</span><span class="p">,</span> <span class="s1">&#39;https://compiler.aepps.com&#39;</span><span class="p">)</span>
+
+<span class="n">node_cli</span> <span class="o">=</span> <span class="n">NodeClient</span><span class="p">(</span><span class="n">Config</span><span class="p">(</span>
+    <span class="n">external_url</span><span class="o">=</span><span class="n">NODE_URL</span><span class="p">,</span>
+    <span class="n">internal_url</span><span class="o">=</span><span class="n">NODE_INTERNAL_URL</span><span class="p">,</span>
+    <span class="n">blocking_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="n">compiler</span> <span class="o">=</span> <span class="n">CompilerClient</span><span class="p">(</span><span class="n">compiler_url</span><span class="o">=</span><span class="n">COMPILER_URL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-an-account">
+<h2>Generate an Account<a class="headerlink" href="#generate-an-account" title="Permalink to this headline">¶</a></h2>
+<p>You’ll need an account (using the <cite>Account</cite> class) for stateful contract calls.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># genrate ALICE account (and transfer AE to alice account)</span>
+<span class="n">alice</span> <span class="o">=</span> <span class="n">Account</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-the-contract-from-file-and-initialize">
+<h2>Read the Contract from file and initialize<a class="headerlink" href="#read-the-contract-from-file-and-initialize" title="Permalink to this headline">¶</a></h2>
+<p>You can read the contract from the stored <cite>.aes</cite> file and use it to initialize the contract instance.
+If you have not provided the <cite>internal_endpoint</cite> or simple do not want to use the <cite>dry-run</cite> functionality
+you can disable it by passing <cite>use-dry-run=False</cite> to the <cite>ContractNative</cite> constructor.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you DO NOT provide the <cite>internal_url</cite> during NodeClient initialization
+and also DID NOT disable the <cite>dry-run</cite> then the contract method calls for
+<cite>un-stateful</cite> methods WILL FAIL.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONTRACT_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;testdata/CryptoHamster.aes&quot;</span><span class="p">)</span>
+
+<span class="c1"># read contract file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CONTRACT_FILE</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">crypto_hamster_contract</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Initialize the contract instance</span>
+<span class="sd">Note: To disable use of dry-run endpoint add the parameter</span>
+<span class="sd">use_dry_run=False</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">crypto_hamster</span> <span class="o">=</span> <span class="n">ContractNative</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">node_cli</span><span class="p">,</span> 
+                                <span class="n">compiler</span><span class="o">=</span><span class="n">compiler</span><span class="p">,</span> 
+                                <span class="n">account</span><span class="o">=</span><span class="n">alice</span><span class="p">,</span> 
+                                <span class="n">source</span><span class="o">=</span><span class="n">crypto_hamster_contract</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Now pass the address of the deployed contract</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the contract is not found at the provided address and for
+the given network, the method will fail</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># CONTRACT_ID is the address of the deployed contract </span>
+<span class="n">crypto_hamster</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">CONTRACT_ID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="call-the-contract-methods">
+<h2>Call the contract methods<a class="headerlink" href="#call-the-contract-methods" title="Permalink to this headline">¶</a></h2>
+<p>All the methods inside the contract are also available (with same signature)
+to use from the contract instance.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the methods that are NOT <cite>stateful</cite>, by default are processed using the <cite>dry-run</cite> endpoint to save gas.
+And therefore, a transaction hash will also not be provided for them.
+This functionality can be either diabled for the contract instance or per method by using <cite>use_dry_run</cite> argument.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># call the contract method (stateful)</span>
+<span class="n">tx_info</span><span class="p">,</span> <span class="n">tx_result</span> <span class="o">=</span> <span class="n">crypto_hamster</span><span class="o">.</span><span class="n">create_hamster</span><span class="p">(</span><span class="s2">&quot;SuperCryptoHamster&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transaction Hash: </span><span class="si">{tx_info.tx_hash}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transaction Result/Return Data: </span><span class="si">{tx_result}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And in a similar way a not stateful call can be invoked</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="c1"># call contract method (not stateful)</span>
+<span class="n">tx_info</span><span class="p">,</span> <span class="n">tx_result</span> <span class="o">=</span> <span class="n">crypto_hamster</span><span class="o">.</span><span class="n">get_hamster_dna</span><span class="p">(</span><span class="s2">&quot;SuperCryptoHamster&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Transaction Result/Return Data: </span><span class="si">{tx_result}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial03-aens.html" class="btn btn-neutral float-right" title="Claimin a name" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial02-contracts-deploy.html" class="btn btn-neutral float-left" title="Deploying a contract" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Andrea Giacobino, Shubhendu Shekhar
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

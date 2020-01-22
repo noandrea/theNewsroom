@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to install the Aeternity SDK &mdash; aepp-sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Keystore format change [LEGACY]" href="keystore_format_change.html" />
+    <link rel="prev" title="Topics" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> aepp-sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                6.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">“How-to” guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Topics</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to install the Aeternity SDK</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-python">Install Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-the-sdk">Install the SDK</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#installing-an-official-release-with-pip">Installing an official release with <code class="docutils literal notranslate"><span class="pre">pip</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installing-the-development-version">Installing the development version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keystore_format_change.html">Keystore format change [LEGACY]</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snippets/index.html">Code Snippets</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">aepp-sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Topics</a> &raquo;</li>
+        
+      <li>How to install the Aeternity SDK</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/topics/install.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-install-the-aeternity-sdk">
+<h1>How to install the Aeternity SDK<a class="headerlink" href="#how-to-install-the-aeternity-sdk" title="Permalink to this headline">¶</a></h1>
+<p>This document will explain differnet way to install the Aeternity Python SDK</p>
+<div class="section" id="install-python">
+<h2>Install Python<a class="headerlink" href="#install-python" title="Permalink to this headline">¶</a></h2>
+<p>Get the latest version of Python at <a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a> or with your operating system’s package manager.</p>
+</div>
+<div class="section" id="install-the-sdk">
+<h2>Install the SDK<a class="headerlink" href="#install-the-sdk" title="Permalink to this headline">¶</a></h2>
+<p>Installation instructions are slightly different depending on whether you’re
+installing official relase or fetching the latest development version.</p>
+<div class="section" id="installing-an-official-release-with-pip">
+<span id="installing-official-release"></span><h3>Installing an official release with <code class="docutils literal notranslate"><span class="pre">pip</span></code><a class="headerlink" href="#installing-an-official-release-with-pip" title="Permalink to this headline">¶</a></h3>
+<p>This is the recommended way to install the Aeternity SDK</p>
+<ol class="arabic simple">
+<li><p>Install <a class="reference external" href="https://pip.pypa.io/">pip</a>. The easiest is to use the <a class="reference external" href="https://pip.pypa.io/en/latest/installing/#installing-with-get-pip-py">standalone pip installer</a>. If your
+distribution already has <code class="docutils literal notranslate"><span class="pre">pip</span></code> installed, you might need to update it if
+it’s outdated. If it’s outdated, you’ll know because installation won’t
+work.</p></li>
+<li><p>Take a look at <a class="reference external" href="https://virtualenv.pypa.io/">virtualenv</a> and <a class="reference external" href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a>. These tools provide
+isolated Python environments, which are more practical than installing
+packages systemwide. They also allow installing packages without
+administrator privileges. The <a class="reference internal" href="../intro/contributing.html"><span class="doc">contributing tutorial</span></a> walks through how to create a virtualenv.</p></li>
+<li><p>After you’ve created and activated a virtual environment, enter the command:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pip install aepp-sdk
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-the-development-version">
+<span id="installing-distribution-package"></span><h3>Installing the development version<a class="headerlink" href="#installing-the-development-version" title="Permalink to this headline">¶</a></h3>
+<p>If you’d like to be able to update your SDK code occasionally with the
+latest bug fixes and improvements, follow these instructions:</p>
+<ol class="arabic simple">
+<li><p>Make sure that you have <a href="#id1"><span class="problematic" id="id2">Git_</span></a> installed and that you can run its commands
+from a shell. (Enter <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">help</span></code> at a shell prompt to test this.)</p></li>
+<li><p>Install <a class="reference external" href="https://poetry.eustace.io/">Poetry</a> and make sure it is available in your <code class="docutils literal notranslate"><span class="pre">PATH</span></code></p></li>
+<li><p>Check out the SDK main development branch like so:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/aeternity/aepp-sdk-python.git
+</pre></div>
+</div>
+<p>This will create a directory <code class="docutils literal notranslate"><span class="pre">aepp-sdk-python</span></code> in your current directory.</p>
+<ol class="arabic simple">
+<li><p>Make sure that the Python interpreter can load the SDK’s code. The most
+convenient way to do this is to use <a class="reference external" href="https://virtualenv.pypa.io/">virtualenv</a>, <a class="reference external" href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a>, and
+<a class="reference external" href="https://pip.pypa.io/">pip</a>.</p></li>
+<li><p>After setting up and activating the virtualenv, run the following command:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ poetry build
+$ python -m pip install dist/$(ls -tr dist | grep whl | tail -1)
+</pre></div>
+</div>
+<p>This will make the SDK code importable, and will also make the
+<code class="docutils literal notranslate"><span class="pre">aecli</span></code> utility command available. In other words, you’re all set!</p>
+<p>When you want to update your copy of the SDK source code, run the command
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span></code> from within the <code class="docutils literal notranslate"><span class="pre">aepp-sdk-directory</span></code> directory. When you do this, Git will
+download any changes.</p>
+<div class="admonition-where-is-the-command-line-client admonition">
+<p class="admonition-title">Where is the command line client?</p>
+<p>The Python SDK bundles a command line client <code class="docutils literal notranslate"><span class="pre">aecli</span></code> that can be use to submit
+transactions and poke around the Aeternity blockchain.
+To be able to access the command line client you have to add it to your executable
+path. To find out where is your base path for installed python libraries use the command
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">site</span> <span class="pre">--user-base</span></code></p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="keystore_format_change.html" class="btn btn-neutral float-right" title="Keystore format change [LEGACY]" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Topics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Andrea Giacobino, Shubhendu Shekhar
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
