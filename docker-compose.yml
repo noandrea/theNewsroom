@@ -1,0 +1,17 @@
+version: '3'
+services:
+  database:
+    container_name: newsroom_db
+    image: postgres
+    restart: unless-stopped
+    ports: 
+    - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: newsroom
+      POSTGRES_USER: newsroom
+      POSTGRES_DB: newsroom
+    volumes: 
+    - newsroom_data:/var/lib/postgresql/data
+
+volumes:
+  newsroom_data:
