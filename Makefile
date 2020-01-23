@@ -79,3 +79,10 @@ docs-lint:
 	$(SPHINXBUILD) -M linkcheck "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	@echo done
 
+docker-backup:
+	@echo backup docker database
+	docker exec -i newsroom_db pg_dump -U newsroom --clean --create --if-exists --no-owner --no-acl newsroom > thenewsroom-$(shell date +"%Y%m%d_%H%M").dump.sql
+	@echo done
+
+
+
