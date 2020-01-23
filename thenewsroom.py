@@ -29,9 +29,12 @@ LOG_FILE = os.environ.get("TRN_LOGFILE", "feed_kraken.log")
 class FeedKraken:
     def __init__(self, outputpath=".", **kwargs):
         self.outputpath = outputpath
+        # select the appropriate log level
+        log_level = logging.DEBUG if kwargs.get("debug", False) else logging.INFO
+        # configure loglevel
         logging.basicConfig(
             # filename=kwargs.get("logpath", LOG_FILE),
-            level=logging.INFO)
+            level=log_level)
         logging.getLogger("requests").setLevel(logging.ERROR)
         logging.info('+------------------------+')
         logging.info('   RELEASE THE KRAKEN!!   ')
@@ -553,9 +556,7 @@ ORDER BY ac.article_day """
                                  for x in article_cnt.meta_keywords.split(',')])
 
                 # print text
-
                 extraction_method = 'goose'
-
                 c.execute("INSERT INTO articles_content(article_hash, content, meta_description) VALUES (%s, %s, %s)",
                           (hash_, text, meta_description))
                 c.execute("UPDATE articles SET flag_text_extract = 1, extraction_method = %s, img_url = %s, tags = %s, lang = %s WHERE hash = %s",
@@ -622,9 +623,8 @@ ORDER BY ac.article_day """
                             sum_values += count
 
                 print('***********************************\n' * 3)
-                print(f"title :{title}")
-                print(f"url: {url}")
-                print(text)
+                print(f"title :{title} - {url}")
+                logging.debug(text)
                 sorted_x = sorted(country_values.items(),
                                   key=operator.itemgetter(1))
                 for t in sorted_x:
@@ -731,7 +731,7 @@ def import_feeds(feeds_file):
 
 
 def cmd_aggregate(args):
-    feed = FeedKraken(outputpath='./www/data')
+    feed = FeedKraken(outputpath='./www/data', debug=args.debug)
     feed.grabUrls()
     feed.extractArticlesText()
     feed.aggregateCountries()
@@ -742,7 +742,7 @@ def cmd_aggregate(args):
 
 
 def cmd_export(args):
-    feed = FeedKraken(outputpath='./www/data')
+    feed = FeedKraken(outputpath='./www/data', debug=args.debug)
     feed.createJsonForMatrix()
     feed.exportCountryArticleDetails()
     # feed.exportFeedsInfo()
@@ -760,13 +760,27 @@ if __name__ == "__main__":
             'name': 'aggregate',
             'help': 'start the top up service',
             'target': cmd_aggregate,
-            'opts': []
+            'opts': [
+                {
+                    "names": ["-debug"],
+                    "default": False,
+                    "action": "store_true",
+                    "help": "the json file containing the list of feeds to process",
+                }
+            ]
         },
         {
             'name': 'export',
             'help': 'start the top up service',
             'target': cmd_export,
-            'opts': []
+            'opts': [
+                {
+                    "names": ["-debug"],
+                    "default": False,
+                    "action": "store_true",
+                    "help": "the json file containing the list of feeds to process",
+                }
+            ]
         },
         {
             'name': 'import',
