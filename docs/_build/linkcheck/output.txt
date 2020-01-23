@@ -1,6 +1,0 @@
-intro/contributing.rst:10: [local] :https://stackoverflow.com/questions/5189560/squash-my-last-x-commits-together-using-git
-intro/index.rst:29: [redirected permanently] https://python.org/ to https://www.python.org/
-topics/install.rst:32: [redirected with Found] https://virtualenv.pypa.io/ to https://virtualenv.pypa.io/en/latest/
-topics/install.rst:27: [redirected permanently] https://pip.pypa.io/ to https://pip.pypa.io/en/stable/
-topics/install.rst:72: [redirected with Found] https://virtualenv.pypa.io/ to https://virtualenv.pypa.io/en/latest/
-topics/install.rst:72: [redirected permanently] https://pip.pypa.io/ to https://pip.pypa.io/en/stable/
