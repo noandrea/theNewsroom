@@ -137,7 +137,7 @@
 
 	</div>
 	<script type="text/javascript">
-		$.get('../data/aggregate_news_feed.json',function( data ){
+		$.get('https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_news_feed.json',function( data ){
 			var news_feed = $('#news-feed');
 			news_feed.empty();
 			data.forEach(function(record){
@@ -172,7 +172,7 @@
 
 		$('#month-year').text(month[today.getMonth()] + ' '+today.getFullYear());
 		// get the news
-		$.get('../data/aggregate_top_scores.json',function( data ){
+		$.get('https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_top_scores.json',function( data ){
 			var rainbow = $('#rainbow');
 			rainbow.empty();
 			var index = 1;

@@ -79,7 +79,7 @@ function redraw() {
       + " scale(" + d3.event.scale + ")");
 }
 
-d3.json("../data/aggregate_tremap.json", function(data) {
+d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_tremap.json", function(data) {
   node = root = data;
 
   var nodes = treemap.nodes(root)

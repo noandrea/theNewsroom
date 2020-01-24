@@ -75,7 +75,7 @@ var svg = d3.select("#newsdesk").append("svg")
 
 
 // data
-d3.json("data/aggregate_data.json", function(miserables) {
+d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_data.json", function(miserables) {
   var matrix = [],
       nodes_source = miserables.nodes_source,
       nodes_target = miserables.nodes_target,
@@ -237,7 +237,7 @@ d3.json("data/aggregate_data.json", function(miserables) {
 <script type="text/javascript">
   
   //headlines
-  d3.json("data/aggregate_top_scores.json", function(hl) {
+  d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_top_scores.json", function(hl) {
     text = ''
     hl.forEach(function(v){
       text += '<li STYLE="list-style-type: decimal">'+v[0]+' <span>'+v[1]+'</span></li>';

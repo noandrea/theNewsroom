@@ -63,8 +63,8 @@ var svg = d3.select("body").append("svg")
 svg.append("circle")
     .attr("r", outerRadius);
 
-d3.csv("../data/countries.csv", function(cities) {
-  d3.json("../data/news_one_day_chord.json", function(matrix) {
+d3.csv("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/countries.csv", function(cities) {
+  d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/news_one_day_chord.json", function(matrix) {
 
 
 
