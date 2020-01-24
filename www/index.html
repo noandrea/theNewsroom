@@ -152,25 +152,24 @@
 	</script>
 
 	<script type="text/javascript">
-		// print the date
-		var today = new Date();
-		$('#day').text(today.getDate());
+    // print the date
+    var last_update = new Date();
+		$('#day').text(last_update.getDate());
 
-		var month=new Array();
-		month[0]="Jan";
-		month[1]="Feb";
-		month[2]="Mar";
-		month[3]="Apr";
-		month[4]="May";
-		month[5]="Jun";
-		month[6]="Jul";
-		month[7]="Aug";
-		month[8]="Sep";
-		month[9]="Oct";
-		month[10]="Nov";
-		month[11]="Dec";
+    var month = new Intl.DateTimeFormat('en-US', {month:'short'}).format(last_update.getMonth());
+    console.log("month is: "+month)
 
-		$('#month-year').text(month[today.getMonth()] + ' '+today.getFullYear());
+		$('#month-year').text(month + ' '+last_update.getFullYear());
+    $('#hour').text(last_update.getHours() + ' ' + last_update.getMinutes());
+
+    $.get('data/last_update.json', function(data){
+      last_update = new Date(data.updated_at)
+		  $('#day').text(last_update.getDate());
+		  $('#month-year').text(month + ' '+last_update.getFullYear());
+      $('#hour').text(last_update.getHours() + ':' + last_update.getMinutes());
+
+    });
+
 		// get the news
 		$.get('https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_top_scores.json',function( data ){
 			var rainbow = $('#rainbow');

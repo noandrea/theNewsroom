@@ -15,7 +15,7 @@ import random
 from goose3 import Goose
 from tfidf import TfIdf
 from time import mktime
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from LSA import LSA
 
 
@@ -138,9 +138,20 @@ class FeedKraken:
         return data
 
     def createJsonForMatrix(self):
+
         self.db = psycopg2.connect("dbname=%s user=%s password=%s host=%s" % (
             self.dbname, self.dbuser, self.dbpass, self.dbhost))
         c = self.db.cursor()
+
+        # get the last update date
+        last_update = datetime.fromisoformat('1994-09-09')
+        c.execute("select max(last_update) from feeds")
+        row = c.fetchone()
+        if row is not None:
+            last_update = row[0].astimezone(timezone.utc)
+        # write down the last update date
+        with open(os.path.join(self.outputpath, "last_update.json"), "w") as fp:
+            json.dump({"updated_at": last_update.isoformat()}, fp)
 
         out = {'nodes_source': [], 'nodes_target': [], 'links': []}
         nodes_index_source = []
