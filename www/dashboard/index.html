@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)http://bost.ocks.org/mike/miserables/ -->
+<html class="ocks-org do-not-copy">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>The Newsroom</title>
+<style>
+
+@import url('style.css');
+
+.background {
+  fill: #fafafa;
+}
+
+line {
+  stroke: #fff;
+}
+
+text.active {
+  fill: red;
+  font-weight: bold;
+}
+
+</style>
+<script src="d3.v2.min.js"></script>
+
+<style type="text/css"></style>
+</head><body>
+
+<header>
+  <aside>December 25, 2013</aside>
+  <a rel="author">A&nbsp;D </a>
+  / <a href="bamboo">trendlist</a>
+  / <a href="streamgraph">streamgraph</a>
+  / <a href="treemap">treemap</a>
+  / <a href="inspect">news lens</a>
+</header>
+
+<h1><i>The Newsroom</i></h1>
+
+<aside >
+  <div id="headlines"></div>
+</aside>
+
+<iframe src="/" width="320" height="568">
+
+</iframe>
+
+
+
+<div id="newsdesk"></div>
+
+<script>
+
+var margin = {top: 80, right: 0, bottom: 10, left: 200},
+    width = 800,
+    height = 2200;
+
+
+
+var x = d3.scale.ordinal().rangeBands([0, height]),
+    z = d3.scale.linear().domain([0, 4]).clamp(true),
+    c = d3.scale.category10().domain(d3.range(10));
+
+var svg = d3.select("#newsdesk").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .style("margin-left", -margin.left + "px")
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+// data
+d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_data.json", function(miserables) {
+  var matrix = [],
+      nodes_source = miserables.nodes_source,
+      nodes_target = miserables.nodes_target,
+      n_source = nodes_source.length;
+      n_target = nodes_target.length;
+
+  // Compute index per node.
+  nodes_source.forEach(function(node, i) {
+    node.index = i;
+    node.count = 0;
+    matrix[i] = d3.range(n_source).map(function(j) { return {x: j, y: i, z: 0}; });
+  });
+  nodes_target.forEach(function(node, i) {
+    node.index = i;
+    node.count = 0;
+    matrix[i] = d3.range(n_target).map(function(j) { return {x: j, y: i, z: 0}; });
+  });
+
+
+
+  // Convert links to matrix; count character occurrences.
+  miserables.links.forEach(function(link) {
+    matrix[link.source][link.target].z += link.value;
+    //matrix[link.target][link.source].z += link.value;
+    //matrix[link.source][link.source].z += link.value;
+    //matrix[link.target][link.target].z += link.value;
+    nodes_source[link.source].count += link.value;
+    nodes_target[link.target].count += link.value;
+  });
+
+  // Precompute the orders.
+  var orders_source = {
+    name: d3.range(n_source).sort(function(a, b) { return d3.ascending(nodes_source[a].name, nodes_source[b].name); }),
+    count: d3.range(n_source).sort(function(a, b) { return nodes_source[b].count - nodes_source[a].count; }),
+    group: d3.range(n_source).sort(function(a, b) { return nodes_source[b].group - nodes_source[a].group; })
+  };
+
+  // Precompute the orders.
+  var orders_target = {
+    name: d3.range(n_target).sort(function(a, b) { return d3.ascending(nodes_target[a].name, nodes_target[b].name); }),
+    count: d3.range(n_target).sort(function(a, b) { return nodes_target[b].count - nodes_target[a].count; }),
+    group: d3.range(n_target).sort(function(a, b) { return nodes_target[b].group - nodes_target[a].group; })
+  };
+
+  // The default sort order.
+  x.domain(orders_source.name);
+  
+
+  svg.append("rect")
+      .attr("class", "background")
+      .attr("width", width)
+      .attr("height", height);
+
+  var row = svg.selectAll(".row")
+      .data(matrix)
+      .enter().append("g")
+      .attr("class", "row")
+      .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
+      .each(row);
+
+  row.append("line")
+      .attr("x2", width);
+
+  row.append("text")
+      .attr("x", -6)
+      .attr("y", x.rangeBand() / 2)
+      .attr("dy", ".32em")
+      .attr("text-anchor", "end")
+      .text(function(d, i) { return nodes_source[i].name; });
+
+  var column = svg.selectAll(".column")
+      .data(nodes_target)
+      .enter().append("g")
+      .attr("class", "column")
+      .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
+
+  column.append("line")
+      .attr("x1", -height);
+
+  column.append("text")
+      .attr("x", 6)
+      .attr("y", x.rangeBand() / 2)
+      .attr("dy", ".32em")
+      .attr("text-anchor", "start")
+      .text(function(d, i) { return nodes_target[i].name; });
+
+  function row(row) {
+    var cell = d3.select(this).selectAll(".cell")
+        .data(row.filter(function(d) { return d.z; }))
+        .enter().append("rect")
+        .attr("class", "cell")
+        .attr("x", function(d) { return x(d.x); })
+        .attr("width", x.rangeBand())
+        .attr("height", x.rangeBand())
+        .style("fill-opacity", function(d) { return z(d.z); })
+        .style("fill", function(d) { return nodes_source[d.x].group == nodes_source[d.y].group ? c(nodes_source[d.x].group) : null; })
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
+  }
+
+  function mouseclick(p){
+
+  }
+
+  //headlines
+  var headlines;
+  d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_headlines.json", function(hl) {
+    headlines = hl
+  });
+
+  function mouseover(p) {
+    d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
+    d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
+
+    var day = d3.select(".column .active").text();
+    var country = d3.select(".row .active").text();
+    var news = day +'-'+country;
+
+    html = [];
+    html.push('<h2>'+country+' - '+day+'</h2>');
+    headlines[news].forEach(function(v){
+      html.push('<a target="_blank" href="'+v.url+'">'+v.title+'</a>');
+    });
+    document.getElementById('headlines').innerHTML = html.join(' / ');
+
+  }
+
+  function mouseout() {
+    d3.selectAll("text").classed("active", false);
+  }
+
+  d3.select("#order").on("change", function() {
+    clearTimeout(timeout);
+    order(this.value);
+  });
+
+  function order(value) {
+    x.domain(orders_source[value]);
+
+    var t = svg.transition().duration(2500);
+
+    t.selectAll(".row")
+        .delay(function(d, i) { return x(i) * 4; })
+        .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
+      .selectAll(".cell")
+        .delay(function(d) { return x(d.x) * 4; })
+        .attr("x", function(d) { return x(d.x); });
+  }
+
+  // var timeout = setTimeout(function() {
+  //   order("group");
+  //   d3.select("#order").property("selectedIndex", 2).node().focus();
+  // }, 5000);
+});
+
+</script>
+<hr/>
+<ol id="top20"></ol>
+<script type="text/javascript">
+  
+  //headlines
+  d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_top_scores.json", function(hl) {
+    text = ''
+    hl.forEach(function(v){
+      text += '<li STYLE="list-style-type: decimal">'+v[0]+' <span>'+v[1]+'</span></li>';
+    });
+    document.getElementById('top20').innerHTML = text;
+  });
+</script>
+
+
+
+<footer>
+  <aside>December 25, 2013</aside>
+  <a href="" rel="author">A&nbsp;D </a>
+  / <a href="bamboo">trendlist</a>
+  / <a href="streamgraph">streamgraph</a>
+  / <a href="treemap">treemap</a>
+  / <a href="inspect">news lens</a>
+  / <a href="sources">sources</a>
+</footer>
+<div id="directions_extension" style="display: none;"></div></body></html>

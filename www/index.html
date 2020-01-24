@@ -1,260 +1,288 @@
-<!DOCTYPE html>
-<!-- saved from url=(0037)http://bost.ocks.org/mike/miserables/ -->
-<html class="ocks-org do-not-copy">
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta charset="utf-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>The Newsroom</title>
-<style>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="msapplication-tap-highlight" content="no" />
+	<script src="js/jquery-2.0.0.min.js"></script>
+	
 
-@import url('style.css');
+	<title>Rainbow News</title>
 
-.background {
-  fill: #fafafa;
-}
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-line {
-  stroke: #fff;
-}
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 
-text.active {
-  fill: red;
-  font-weight: bold;
-}
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/bamboo.css">
 
-</style>
-<script src="d3.v2.min.js"></script>
+	<style type="text/css">
+		#today{
+			width:140px;
+			height: 140px;
+			position: absolute;
+			top: 50%;
+			left:50%;
+			margin-left: -72px;
+			margin-top: -72px;
 
-<style type="text/css"></style>
-</head><body>
+			border:4px solid #fff;
+			text-align: center;
+			color:#fff;
 
-<header>
-  <aside>December 25, 2013</aside>
-  <a rel="author">A&nbsp;D </a>
-  / <a href="bamboo">trendlist</a>
-  / <a href="streamgraph">streamgraph</a>
-  / <a href="treemap">treemap</a>
-  / <a href="inspect">news lens</a>
-</header>
+			pointer-events:none;
+			line-height: 
 
-<h1><i>The Newsroom</i></h1>
+		}
 
-<aside >
-  <div id="headlines"></div>
-</aside>
+		#day{
+			font-size:102px;
+			font-weight:600;
+			line-height:112px;
+		}
 
-<iframe src="bamboo" width="320" height="568">
+		#month-year{
+			font-size:24px; 
+			text-transform:uppercase;
+			line-height:10px;
+			display:block;
+		}
+	</style>
 
-</iframe>
+</head>
 
+<body>
 
+	<!--<div id="console">test</div>-->
 
-<div id="newsdesk"></div>
+	<nav id="main-nav" class="navigation overflow">
+		<ul id="news-feed">
+			<li><a href="#">Menu item</a></li>
+			<li><a href="#">Menu item 2</a></li>
+			<li><a href="#">Menu item 3</a></li>
+			<li><a href="#">Menu item 4</a></li>
+			<li><a href="#">Menu item 5</a></li>
+			<li><a href="#">Menu item 6</a></li>
+		</ul>
+	</nav>
 
-<script>
+	<div id="container">
+		<div id="today">
+			<span id="day">25</span>
+			<span id="month-year">dec 2013</span>
+		</div>
+		<!--<header class="primary">
+			<span class="open icon">&#9776;</span>
+			
+		</header>-->
 
-var margin = {top: 80, right: 0, bottom: 10, left: 200},
-    width = 800,
-    height = 2200;
+		<section id="scroller" class="overflow" >
+			
+			<ul id="rainbow">
+				<!-- <li class="color1"><a href="#"><label>Russia</label></a> </li>
+				<li class="color2"><a href="#"><label>Egypt</label></a></li>
+				<li class="color3"><a href="#"><label>United States</label></a></li>
+				<li class="color4"><a href="#"><label>France</label></a></li>
+				<li class="color5"><a href="#"><label>China</label></a></li>
+				<li class="color6"><a href="#"><label>Syria</label></a></li>
+				<li class="color7"><a href="#"><label>India</label></a></li>
+				<li class="color8"><a href="#"><label>Sudan</label></a></li>
+				<li class="color9"><a href="#"><label>Turkey</label></a></li>
+				<li class="color10"><a href="#"><label>Turkey</label></a></li>
+				<li class="color11"><a href="#"><label>Turkey</label></a></li>
+				<li class="color12"><a href="#"><label>Turkey</label></a></li>
+				<li class="color13"><a href="#"><label>Turkey</label></a></li>
+				<li class="color14"><a href="#"><label>Turkey</label></a></li>
+				<li class="color15"><a href="#"><label>Turkey</label></a></li>
+				<li class="color16"><a href="#"><label>Turkey</label></a></li>
+				<li class="color17"><a href="#"><label>Turkey</label></a></li>
+				<li class="color18"><a href="#"><label>Turkey</label></a></li>
+				<li class="color19"><a href="#"><label>Turkey</label></a></li>
+				<li class="color20"><a href="#"><label>Turkey</label></a></li>
+				<li class="color21"><a href="#"><label>Turkey</label></a></li>
+				<li class="color22"><a href="#"><label>Turkey</label></a></li>
+				<li class="color23"><a href="#"><label>Turkey</label></a></li>
+				<li class="color24"><a href="#"><label>Turkey</label></a></li>
+				<li class="color25"><a href="#"><label>Turkey</label></a></li>
+				<li class="color26"><a href="#"><label>Turkey</label></a></li>
+				<li class="color27"><a href="#"><label>Turkey</label></a></li>
+				<li class="color28"><a href="#"><label>Turkey</label></a></li>
+				<li class="color29"><a href="#"><label>Turkey</label></a></li>
+				<li class="color30"><a href="#"><label>Turkey</label></a></li>
+				<li class="color31"><a href="#"><label>Turkey</label></a></li>
+				<li class="color32"><a href="#"><label>Turkey</label></a></li>
+				<li class="color33"><a href="#"><label>Turkey</label></a></li>
+				<li class="color34"><a href="#"><label>Turkey</label></a></li>
+				<li class="color35"><a href="#"><label>Turkey</label></a></li>
+				<li class="color36"><a href="#"><label>Turkey</label></a></li>
+				<li class="color37"><a href="#"><label>Turkey</label></a></li>
+				<li class="color38"><a href="#"><label>Turkey</label></a></li>
+				<li class="color39"><a href="#"><label>Turkey</label></a></li>
+				<li class="color40"><a href="#"><label>Turkey</label></a></li>
+				<li class="color41"><a href="#"><label>Turkey</label></a></li>
+				<li class="color42"><a href="#"><label>Turkey</label></a></li>
+				<li class="color43"><a href="#"><label>Turkey</label></a></li>
+				<li class="color44"><a href="#"><label>Turkey</label></a></li>
+				<li class="color45"><a href="#"><label>Turkey</label></a></li> -->
 
+				
+			</ul>
 
+		</section>
 
-var x = d3.scale.ordinal().rangeBands([0, height]),
-    z = d3.scale.linear().domain([0, 4]).clamp(true),
-    c = d3.scale.category10().domain(d3.range(10));
+	</div>
+	<script type="text/javascript">
+		$.get('https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_news_feed.json',function( data ){
+			var news_feed = $('#news-feed');
+			news_feed.empty();
+			data.forEach(function(record){
+				var li = $('<li></li>')
+				record.iso.forEach(function(iso){
+					li.addClass(iso)
+				});
 
-var svg = d3.select("#newsdesk").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .style("margin-left", -margin.left + "px")
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				news_feed.append(li.append($('<a target="_blank"></a>').text(record.title).attr('href',record.url)));
+			});
+		});
+	</script>
 
+	<script type="text/javascript">
+		// print the date
+		var today = new Date();
+		$('#day').text(today.getDate());
 
-// data
-d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_data.json", function(miserables) {
-  var matrix = [],
-      nodes_source = miserables.nodes_source,
-      nodes_target = miserables.nodes_target,
-      n_source = nodes_source.length;
-      n_target = nodes_target.length;
+		var month=new Array();
+		month[0]="Jan";
+		month[1]="Feb";
+		month[2]="Mar";
+		month[3]="Apr";
+		month[4]="May";
+		month[5]="Jun";
+		month[6]="Jul";
+		month[7]="Aug";
+		month[8]="Sep";
+		month[9]="Oct";
+		month[10]="Nov";
+		month[11]="Dec";
 
-  // Compute index per node.
-  nodes_source.forEach(function(node, i) {
-    node.index = i;
-    node.count = 0;
-    matrix[i] = d3.range(n_source).map(function(j) { return {x: j, y: i, z: 0}; });
-  });
-  nodes_target.forEach(function(node, i) {
-    node.index = i;
-    node.count = 0;
-    matrix[i] = d3.range(n_target).map(function(j) { return {x: j, y: i, z: 0}; });
-  });
+		$('#month-year').text(month[today.getMonth()] + ' '+today.getFullYear());
+		// get the news
+		$.get('https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_top_scores.json',function( data ){
+			var rainbow = $('#rainbow');
+			rainbow.empty();
+			var index = 1;
+			var size = data.length;
 
+			// document size
+			var body = document.body;
+			var html = document.documentElement;
 
+			var page_height = Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
 
-  // Convert links to matrix; count character occurrences.
-  miserables.links.forEach(function(link) {
-    matrix[link.source][link.target].z += link.value;
-    //matrix[link.target][link.source].z += link.value;
-    //matrix[link.source][link.source].z += link.value;
-    //matrix[link.target][link.target].z += link.value;
-    nodes_source[link.source].count += link.value;
-    nodes_target[link.target].count += link.value;
-  });
+			var h_start = 300;
+			var h_end =   180;
+			var h_step =  (h_start - h_end)/size;
+			var h_current = h_start;
 
-  // Precompute the orders.
-  var orders_source = {
-    name: d3.range(n_source).sort(function(a, b) { return d3.ascending(nodes_source[a].name, nodes_source[b].name); }),
-    count: d3.range(n_source).sort(function(a, b) { return nodes_source[b].count - nodes_source[a].count; }),
-    group: d3.range(n_source).sort(function(a, b) { return nodes_source[b].group - nodes_source[a].group; })
-  };
+			sum_rank = 0
+			data.forEach(function(entry){
+				console.log(entry[1])
+				sum_rank += parseFloat(entry[1])
+			});
+			console.log("sum_rank", sum_rank)
+			console.log("len ranks", data.length)
+			console.log("page height", page_height)
+			mul = page_height / sum_rank
 
-  // Precompute the orders.
-  var orders_target = {
-    name: d3.range(n_target).sort(function(a, b) { return d3.ascending(nodes_target[a].name, nodes_target[b].name); }),
-    count: d3.range(n_target).sort(function(a, b) { return nodes_target[b].count - nodes_target[a].count; }),
-    group: d3.range(n_target).sort(function(a, b) { return nodes_target[b].group - nodes_target[a].group; })
-  };
-
-  // The default sort order.
-  x.domain(orders_source.name);
-  
-
-  svg.append("rect")
-      .attr("class", "background")
-      .attr("width", width)
-      .attr("height", height);
-
-  var row = svg.selectAll(".row")
-      .data(matrix)
-      .enter().append("g")
-      .attr("class", "row")
-      .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
-      .each(row);
-
-  row.append("line")
-      .attr("x2", width);
-
-  row.append("text")
-      .attr("x", -6)
-      .attr("y", x.rangeBand() / 2)
-      .attr("dy", ".32em")
-      .attr("text-anchor", "end")
-      .text(function(d, i) { return nodes_source[i].name; });
-
-  var column = svg.selectAll(".column")
-      .data(nodes_target)
-      .enter().append("g")
-      .attr("class", "column")
-      .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
-
-  column.append("line")
-      .attr("x1", -height);
-
-  column.append("text")
-      .attr("x", 6)
-      .attr("y", x.rangeBand() / 2)
-      .attr("dy", ".32em")
-      .attr("text-anchor", "start")
-      .text(function(d, i) { return nodes_target[i].name; });
-
-  function row(row) {
-    var cell = d3.select(this).selectAll(".cell")
-        .data(row.filter(function(d) { return d.z; }))
-        .enter().append("rect")
-        .attr("class", "cell")
-        .attr("x", function(d) { return x(d.x); })
-        .attr("width", x.rangeBand())
-        .attr("height", x.rangeBand())
-        .style("fill-opacity", function(d) { return z(d.z); })
-        .style("fill", function(d) { return nodes_source[d.x].group == nodes_source[d.y].group ? c(nodes_source[d.x].group) : null; })
-        .on("mouseover", mouseover)
-        .on("mouseout", mouseout);
-  }
-
-  function mouseclick(p){
-
-  }
-
-  //headlines
-  var headlines;
-  d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_headlines.json", function(hl) {
-    headlines = hl
-  });
-
-  function mouseover(p) {
-    d3.selectAll(".row text").classed("active", function(d, i) { return i == p.y; });
-    d3.selectAll(".column text").classed("active", function(d, i) { return i == p.x; });
-
-    var day = d3.select(".column .active").text();
-    var country = d3.select(".row .active").text();
-    var news = day +'-'+country;
-
-    html = [];
-    html.push('<h2>'+country+' - '+day+'</h2>');
-    headlines[news].forEach(function(v){
-      html.push('<a target="_blank" href="'+v.url+'">'+v.title+'</a>');
-    });
-    document.getElementById('headlines').innerHTML = html.join(' / ');
-
-  }
-
-  function mouseout() {
-    d3.selectAll("text").classed("active", false);
-  }
-
-  d3.select("#order").on("change", function() {
-    clearTimeout(timeout);
-    order(this.value);
-  });
-
-  function order(value) {
-    x.domain(orders_source[value]);
-
-    var t = svg.transition().duration(2500);
-
-    t.selectAll(".row")
-        .delay(function(d, i) { return x(i) * 4; })
-        .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
-      .selectAll(".cell")
-        .delay(function(d) { return x(d.x) * 4; })
-        .attr("x", function(d) { return x(d.x); });
-  }
-
-  // var timeout = setTimeout(function() {
-  //   order("group");
-  //   d3.select("#order").property("selectedIndex", 2).node().focus();
-  // }, 5000);
-});
-
-</script>
-<hr/>
-<ol id="top20"></ol>
-<script type="text/javascript">
-  
-  //headlines
-  d3.json("https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/aggregate_top_scores.json", function(hl) {
-    text = ''
-    hl.forEach(function(v){
-      text += '<li STYLE="list-style-type: decimal">'+v[0]+' <span>'+v[1]+'</span></li>';
-    });
-    document.getElementById('top20').innerHTML = text;
-  });
-</script>
+			data.forEach(function(entry){
+				var rank = entry[1]
+			
+				var label = $('<label>'+entry[0]+'</label>');
+				var a = $('<a href="#"></a>').on('click',function(){
+					$('#news-feed').find('li').not('.'+entry[2]).slideUp();
+					$('#news-feed').find('.'+entry[2]).slideDown();
+				});
 
 
+				//var li = $('<li data-rank="'+rank+'" class="color'+index+'""> </li>');
+				var li = $('<li  style="background-color:hsl('+h_current+',79%,54%)""> </li>')
+					.attr('data-rank',rank);
+				h_current -= h_step;
+				
 
-<footer>
-  <aside>December 25, 2013</aside>
-  <a href="" rel="author">A&nbsp;D </a>
-  / <a href="bamboo">trendlist</a>
-  / <a href="streamgraph">streamgraph</a>
-  / <a href="treemap">treemap</a>
-  / <a href="inspect">news lens</a>
-  / <a href="sources">sources</a>
-</footer>
-<div id="directions_extension" style="display: none;"></div></body></html>
+
+				var h = rank * mul;
+	 			if(h < 5) h = 5;
+	 			a.height(h);
+	 			var alpha = (h - 14) / 150;
+	 			if(alpha>0.5) alpha = 0.5;
+	 			var size = h / 2.5;
+	 			if(size<10) size = 10;
+	 			if(size>24) size = 24;
+	 			label.css('font-size',size+'px');
+	 			label.css('line-height',size+'px');
+	 			if(h<15)
+	 			 	{
+	 			 		label.hide()
+	 			 		a.css('display','block')
+	 				}
+	 			 	else
+	 			 	{
+	 			 		label.css('color', 'rgba(0,0,0,' + alpha + ')');
+	 			 		a.css('display','table')
+	 			 	}
+
+	 			 li.append(a.append(label))
+
+
+				rainbow.append(li)
+				index++;
+
+			})
+
+		});
+				
+	</script>
+
+	<script src="js/bamboo.0.1.js"></script>
+	<script>
+		var site = new Bamboo();
+	</script>
+	<script>
+		// $( "#rainbow>li>a" ).each(function( index ) {
+ 	// 		 var h = (45-index)*2;
+ 	// 		 if(h < 5) h = 5;
+ 	// 		 $(this).height(h);
+ 	// 		 var alpha = (h - 14) / 150;
+ 	// 		 if(alpha>0.5) alpha = 0.5;
+ 	// 		 var size = h / 2.5;
+ 	// 		 if(size<10) size = 10;
+ 	// 		 if(size>24) size = 24;
+ 	// 		 $(this).show().find("label").css('font-size',size+'px');
+ 	// 		 $(this).show().find("label").css('line-height',size+'px');
+ 	// 		 if(h<15)
+ 	// 		 	{
+ 	// 		 		$(this).find("label").hide()
+ 	// 		 		$(this).css('display','block')
+ 	// 			}
+ 	// 		 	else
+ 	// 		 	{
+ 	// 		 		$(this).show().find("label").css('color', 'rgba(0,0,0,' + alpha + ')');
+ 	// 		 		$(this).css('display','table')
+ 	// 		 	}
+ 			 
+ 	// 	});
+
+
+	</script>
+	
+
+</body>
+
+</html>	
