@@ -144,7 +144,7 @@ class FeedKraken:
         c = self.db.cursor()
 
         # get the last update date
-        last_update = datetime.fromisoformat('1994-09-09')
+        last_update = datetime(1994, 9, 9, 0, 0)
         c.execute("select max(last_update) from feeds")
         row = c.fetchone()
         if row is not None:
