@@ -154,16 +154,15 @@
 	<script type="text/javascript">
     // print the date
     var last_update = new Date();
-		$('#day').text(last_update.getDate());
-
     var month = new Intl.DateTimeFormat('en-US', {month:'short'}).format(last_update.getMonth());
-    console.log("month is: "+month)
-
+		
+    $('#day').text(last_update.getDate());
 		$('#month-year').text(month + ' '+last_update.getFullYear());
     $('#hour').text(last_update.getHours() + ' ' + last_update.getMinutes());
 
     $.get('https://thenewsroom-world-data.s3-eu-west-1.amazonaws.com/last_update.json', function(data){
       last_update = new Date(data.updated_at)
+      month = new Intl.DateTimeFormat('en-US', {month:'short'}).format(last_update.getMonth());
 		  $('#day').text(last_update.getDate());
 		  $('#month-year').text(month + ' '+last_update.getFullYear());
       $('#hour').text(last_update.getHours() + ':' + last_update.getMinutes());
