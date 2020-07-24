@@ -1,3 +1,7 @@
+CREATE USER anchorman WITH PASSWORD 'newsdesk';
+CREATE DATABASE thenewsroom;
+GRANT ALL PRIVILEGES ON DATABASE thenewsroom to anchorman;
+
 DROP TABLE IF EXISTS "feeds";
 CREATE TABLE feeds (
 	"feed_id" SERIAL PRIMARY KEY,
@@ -28,6 +32,14 @@ CREATE TABLE "articles" (
 	 "content" TEXT,
 	 "extraction_method" VARCHAR(255)
 );
+
+CREATE TABLE "articles_update" (
+	"article_hash" char(40) NOT NULL,
+	"updated_on" timestamp NOT NULL,
+	"article_day" date,
+	PRIMARY KEY ("article_hash", "updated_on"),
+	CONSTRAINT "au_articles_hash_fk" FOREIGN KEY ("article_hash") REFERENCES "articles" ("hash") ON UPDATE CASCADE ON DELETE CASCADE
+)
 
 DROP TABLE IF EXISTS "article_country";
 CREATE TABLE "article_country" (
@@ -149,7 +161,13 @@ ORDER BY a.published DESC;
 
 
 
-
+-- top countries
+DROP VIEW IF EXISTS top_country;
+CREATE VIEW top_country AS
+SELECT aac.country, aac.country_iso3, aac.continent , sum(score) as total_score, avg(score) as avg_score
+FROM countries c LEFT JOIN aggregate_article_country aac ON c."isoAlpha3" = aac."country_iso3"
+GROUP BY country
+ORDER BY total_score DESC;
 
 -- top countries
 DROP VIEW top_country_last_week;

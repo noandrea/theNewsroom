@@ -83,15 +83,16 @@ exports.countryNews = function(req,res) {
     // check limit and offset values
     if(isNaN(offset) || isNaN(limit) || offset < 0 || limit < 1){
         res.send(400, { error: 'invalid values for offset/limit parameters' });
-        return console.error('invalid parameter ', err);
+        return console.error('invalid parameter');
     }
 
     pg.connect(conString, function(err, client, done) {
           if(err) {
+            res.send(500, { error: 'Something blew up!' });
             return console.error('error fetching client from pool', err);
           }
           //client.query({name:"news_st", text:"SELECT title,url,article_day, published FROM articles_headlines_feed WHERE country_iso3 = $1 LIMIT $2::int OFFSET $3::int", values:[code,limit,offset]}, function(err, result) {
-            client.query("SELECT title,url,published, related_countries FROM articles_headlines_by_country WHERE country_iso3 = $1 LIMIT $2::int OFFSET $3::int", [code,limit,offset], function(err, result) {
+            client.query("SELECT article_hash as news_id,title,url,published, related_countries FROM articles_headlines_by_country WHERE country_iso3 = $1 LIMIT $2::int OFFSET $3::int", [code,limit,offset], function(err, result) {
                 //call `done()` to release the client back to the pool
                 done();
                 if(err) {
